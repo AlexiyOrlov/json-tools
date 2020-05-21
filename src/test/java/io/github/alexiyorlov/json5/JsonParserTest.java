@@ -2,9 +2,6 @@ package io.github.alexiyorlov.json5;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -12,60 +9,27 @@ import java.util.Map;
 class JsonParserTest {
     @Test
     void testObject() {
-        try {
-            FileReader fileReader = new FileReader("src/test/object0.json");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String string;
-            StringBuilder pretty = new StringBuilder();
-            StringBuilder builder = new StringBuilder();
-            while ((string = bufferedReader.readLine()) != null) {
-                builder.append(string);
-                pretty.append(string).append('\n');
-            }
-            fileReader.close();
-            bufferedReader.close();
-            System.out.println(pretty.toString());
-            String single = builder.toString();
-            System.out.println("One-liner: " + single + '\n');
 
-            if (single.startsWith("{")) {
-                Map<String, Object> pairs = new JsonParser().parseObject(single);
-                System.out.println("Result: ");
-                System.out.println("{");
-                pairs.forEach((s, o) -> System.out.println(s + " : " + o));
-                System.out.println("}");
-            }
-        } catch (IOException fileNotFoundException) {
-            fileNotFoundException.printStackTrace();
+        String string = JsonParser.readJson("src/test/object0.json");
+        System.out.println("One-liner: " + string + '\n');
+        if (string != null && string.startsWith("{")) {
+            Map<String, Object> pairs = new JsonParser().parseObject(string);
+            System.out.println("Result: ");
+            System.out.println("{");
+            pairs.forEach((s, o) -> System.out.println(s + " : " + o));
+            System.out.println("}");
         }
     }
 
     @Test
     void testArray() {
-        try {
-            FileReader fileReader = new FileReader("src/test/array0.json");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String string;
-            StringBuilder pretty = new StringBuilder();
-            StringBuilder builder = new StringBuilder();
-            while ((string = bufferedReader.readLine()) != null) {
-                builder.append(string);
-                pretty.append(string).append('\n');
-            }
-            fileReader.close();
-            bufferedReader.close();
 
-            System.out.println(pretty.toString());
-            String single = builder.toString();
-            System.out.println("One-liner: " + single + '\n');
-
-            if (single.startsWith("[")) {
-                List<Object> objects = new JsonParser().parseArray(single);
-                System.out.println("Result: ");
-                objects.forEach(System.out::println);
-            }
-        } catch (IOException fileNotFoundException) {
-            fileNotFoundException.printStackTrace();
+        String string = JsonParser.readJson("src/test/array0.json");
+        System.out.println("One-liner: " + string + '\n');
+        if (string != null && string.startsWith("[")) {
+            List<Object> objects = new JsonParser().parseArray(string);
+            System.out.println("Result: ");
+            objects.forEach(System.out::println);
         }
     }
 
