@@ -1,0 +1,22 @@
+[
+  "Str\"ing",
+  234807,
+  null,
+  false,
+  "unicode \uf6a4remainder",
+  true,
+  525256.2521554,
+  "oldline\nnewline",
+  {
+    "key1": "value1",
+    "key2": "value2",
+    "number": 33
+  },
+  [
+    "nested1",
+    "nested2",
+    3,
+    4.0
+  ],
+  "comma,gfhg"
+]

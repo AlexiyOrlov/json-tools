@@ -1,0 +1,19 @@
+{
+  "keyString": "string",
+  "keyArray": [
+    "value",
+    34.12
+  ],
+  "keyTrue": true,
+  "keyFalse": false,
+  "keyNull": null,
+  "keyObject": {
+    "nested1": "nestedValue",
+    "integer": 98
+  },
+  "object2": {
+    "nested3": true,
+    "nested4": null
+  },
+  "keyFloat": 45.67
+}

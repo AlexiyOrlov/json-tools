@@ -1,0 +1,23 @@
+[
+  "Str\"ing",
+  234807,
+  null,
+  false,
+  "unicode \uf6a4",
+  [
+    55,
+    88.99,
+    ""
+  ],
+  true,
+  525256.2521554,
+  [
+    "nested1",
+    "nestedComma,",
+    "nested2",
+    [
+      "2nested",
+      "2nested2"
+    ]
+  ]
+]
