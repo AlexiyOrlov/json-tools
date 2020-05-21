@@ -19,7 +19,7 @@ public class Parser {
         //first, split the string on commas
         List<String> parts = parseElements(input);
 
-        //second, parse primitives and arrays
+        //second, parse
         for (String part : parts) {
             Object converted = convert(part);
             objects.add(converted);
@@ -182,6 +182,9 @@ public class Parser {
         }
         stringPairs.forEach((s, s2) -> {
             s = s.substring(1, s.length() - 1);
+            //remove trailing comma
+            if (s2.endsWith(","))
+                s2 = s2.substring(0, s2.length() - 1);
             //remove leading ':'
             Object value = convert(s2.substring(1));
             objectMap.put(s, value);
@@ -198,6 +201,8 @@ public class Parser {
         boolean insideString = false;
         boolean insideObject = false;
         boolean insideArray = false;
+        int arrayCounter = 0;
+        int objectCounter = 0;
         ArrayList<String> parts = new ArrayList<>();
 
         input = input.substring(1, input.length() - 1);
@@ -208,30 +213,31 @@ public class Parser {
             if (chr == '{') {
                 insideObject = true;
                 string += '{';
+                objectCounter++;
             } else if (chr == '}') {
                 insideObject = false;
                 string += '}';
+                objectCounter--;
             } else if (chr == '[') {
                 insideArray = true;
-                string += '['; //TODO
+                string += '[';
+                arrayCounter++;
             } else if (chr == ']') {
-                if (insideArray) {
                     insideArray = false;
-                    string += ']';
-                }
+                string += ']';
+                arrayCounter--;
             } else if (chr == '"') {
                 insideString = !insideString;
                 string += '"';
             } else if (chr == ',') {
+
+                string += ',';
                 if (!insideObject && !insideArray) {
-                    if (insideString) {
-                        string += ',';
-                    } else {
+                    if (!insideString && arrayCounter == 0 && objectCounter == 0) {
+
                         parts.add(string);
                         string = "";
                     }
-                } else {
-                    string += ',';
                 }
             } else if (chr == ' ') {
                 if (insideString)

@@ -72,13 +72,13 @@ class ParserTest {
     @Test
     void testOthers() {
         String array = Parser.readJson("src/test/array.json");
-        String object = Parser.readJson("src/test/object2.json");
+        String object2 = Parser.readJson("src/test/object2.json");
         String object1 = Parser.readJson("src/test/object1.json");
-        String object2 = Parser.readJson("src/test/object3.json");
+        String object3 = Parser.readJson("src/test/object3.json");
         HashSet<String> everything = new HashSet<>(3);
         everything.add(array);
-        everything.add(object);
-//        everything.add(object2);
+        everything.add(object2);
+        everything.add(object3);
         everything.add(object1);
         HashSet<Object> results = new HashSet<>(everything.size());
         everything.forEach(s -> {
