@@ -76,10 +76,10 @@ class JsonParserTest {
         String object1 = JsonParser.readJson("src/test/object1.json");
         String object3 = JsonParser.readJson("src/test/object3.json");
         HashSet<String> everything = new HashSet<>(3);
-//        everything.add(array);
-//        everything.add(object2);
-//        everything.add(object3);
-//        everything.add(object1);
+        everything.add(array);
+        everything.add(object2);
+        everything.add(object3);
+        everything.add(object1);
         everything.add(JsonParser.readJson("src/test/big_object.json"));
         HashSet<Object> results = new HashSet<>(everything.size());
         everything.forEach(s -> {
