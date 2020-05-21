@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A primitive JSON parser. Use {@link #parseObject} if the input is an object, and {@link #parseArray}
+ * if the input is an array
+ */
 public class JsonParser {
 
     /**
@@ -38,8 +42,7 @@ public class JsonParser {
         } else if (value.matches("[0-9]+\\.?[0-9]*")) //is number?
         {
             if (value.contains(".")) {
-                //TODO float or double?
-                return Float.parseFloat(value);
+                return Double.parseDouble(value);
             } else
                 return Integer.parseInt(value);
         } else if (value.startsWith("[") && value.endsWith("]")) //is array?
