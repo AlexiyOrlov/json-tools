@@ -14,16 +14,7 @@
             <version>5.7.0-M1</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.5</version>
-        </dependency>
     </dependencies>
-    <!--    <properties>-->
-    <!--        <maven.compiler.source>13</maven.compiler.source>-->
-    <!--        <maven.compiler.target>13</maven.compiler.target>-->
-    <!--    </properties>-->
     <build>
         <plugins>
             <plugin>
