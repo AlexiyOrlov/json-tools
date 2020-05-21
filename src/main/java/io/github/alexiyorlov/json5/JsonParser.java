@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Parser {
+public class JsonParser {
 
     /**
      * @param input json
      * @return array
      */
-    static List<Object> parseArray(String input) {
+    public static List<Object> parseArray(String input) {
         List<Object> objects = new ArrayList<>();
 
         //first, split the string on commas
@@ -106,6 +106,7 @@ public class Parser {
                     string += ',';
                 }
             } else if (chr == '\\') {
+                //TODO handle more special characters
                 char ahead = input.charAt(index + 1);
                 if (ahead == '"') {
                     index++;
@@ -134,11 +135,11 @@ public class Parser {
     }
 
     /**
-     * Recursively parses and object
+     * Recursively parses an object
      *
      * @param input object as string
      */
-    static Map<String, Object> parseObject(String input) {
+    public static Map<String, Object> parseObject(String input) {
         Map<String, Object> objectMap = new HashMap<>();
 
         List<String> pairs = parsePairs(input);
@@ -251,7 +252,11 @@ public class Parser {
         return parts;
     }
 
-    static String readJson(String file) {
+    /**
+     * @param file file path
+     * @return Json as string
+     */
+    public static String readJson(String file) {
         try {
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);

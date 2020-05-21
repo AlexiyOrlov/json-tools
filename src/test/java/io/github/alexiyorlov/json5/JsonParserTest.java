@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-class ParserTest {
+class JsonParserTest {
     @Test
     void testObject() {
         try {
@@ -29,7 +29,7 @@ class ParserTest {
             System.out.println("One-liner: " + single + '\n');
 
             if (single.startsWith("{")) {
-                Map<String, Object> pairs = Parser.parseObject(single);
+                Map<String, Object> pairs = JsonParser.parseObject(single);
                 System.out.println("Result: ");
                 System.out.println("{");
                 pairs.forEach((s, o) -> System.out.println(s + " : " + o));
@@ -60,7 +60,7 @@ class ParserTest {
             System.out.println("One-liner: " + single + '\n');
 
             if (single.startsWith("[")) {
-                List<Object> objects = Parser.parseArray(single);
+                List<Object> objects = JsonParser.parseArray(single);
                 System.out.println("Result: ");
                 objects.forEach(System.out::println);
             }
@@ -71,10 +71,10 @@ class ParserTest {
 
     @Test
     void testOthers() {
-        String array = Parser.readJson("src/test/array.json");
-        String object2 = Parser.readJson("src/test/object2.json");
-        String object1 = Parser.readJson("src/test/object1.json");
-        String object3 = Parser.readJson("src/test/object3.json");
+        String array = JsonParser.readJson("src/test/array.json");
+        String object2 = JsonParser.readJson("src/test/object2.json");
+        String object1 = JsonParser.readJson("src/test/object1.json");
+        String object3 = JsonParser.readJson("src/test/object3.json");
         HashSet<String> everything = new HashSet<>(3);
         everything.add(array);
         everything.add(object2);
@@ -83,9 +83,9 @@ class ParserTest {
         HashSet<Object> results = new HashSet<>(everything.size());
         everything.forEach(s -> {
             if (s.startsWith("[")) {
-                results.add(Parser.parseArray(s));
+                results.add(JsonParser.parseArray(s));
             } else if (s.startsWith("{")) {
-                results.add(Parser.parseObject(s));
+                results.add(JsonParser.parseObject(s));
             }
         });
         results.forEach(o -> {
