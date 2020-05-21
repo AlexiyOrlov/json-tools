@@ -1,4 +1,4 @@
-package io.github.alexiyorlov.json;
+package dev.buildtool.json;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,3 +1,3 @@
-module io.github.alexiyorlov {
-    exports io.github.alexiyorlov.json;
+module dev.buildtool {
+    exports dev.buildtool.json;
 }
