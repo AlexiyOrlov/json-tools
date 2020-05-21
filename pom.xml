@@ -7,6 +7,9 @@
     <groupId>io.gihub.alexiyorlov</groupId>
     <artifactId>json-tools</artifactId>
     <version>0.0.1</version>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
