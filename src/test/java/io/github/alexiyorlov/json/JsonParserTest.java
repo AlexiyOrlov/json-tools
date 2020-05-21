@@ -6,9 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-class JsonParserTest {
+public class JsonParserTest {
     @Test
-    void testObject() {
+    public void testObject() {
 
         String string = JsonParser.readJson("src/test/object0.json");
         System.out.println("One-liner: " + string + '\n');
@@ -22,7 +22,7 @@ class JsonParserTest {
     }
 
     @Test
-    void testArray() {
+    public void testArray() {
 
         String string = JsonParser.readJson("src/test/array0.json");
         System.out.println("One-liner: " + string + '\n');
@@ -34,7 +34,7 @@ class JsonParserTest {
     }
 
     @Test
-    void testOthers() {
+    public void testOthers() {
         String array = JsonParser.readJson("src/test/array.json");
         String object2 = JsonParser.readJson("src/test/object2.json");
         String object1 = JsonParser.readJson("src/test/object1.json");
