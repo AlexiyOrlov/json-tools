@@ -22,6 +22,10 @@
             <organizationUrl>https://buildtool.dev/</organizationUrl>
         </developer>
     </developers>
+    <scm>
+        <connection>scm:git:git://github.com/AlexiyOrlov/json-tools.git</connection>
+        <url>https://github.com/AlexiyOrlov/json-tools</url>
+    </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
