@@ -29,7 +29,7 @@ class JsonParserTest {
             System.out.println("One-liner: " + single + '\n');
 
             if (single.startsWith("{")) {
-                Map<String, Object> pairs = JsonParser.parseObject(single);
+                Map<String, Object> pairs = new JsonParser().parseObject(single);
                 System.out.println("Result: ");
                 System.out.println("{");
                 pairs.forEach((s, o) -> System.out.println(s + " : " + o));
@@ -60,7 +60,7 @@ class JsonParserTest {
             System.out.println("One-liner: " + single + '\n');
 
             if (single.startsWith("[")) {
-                List<Object> objects = JsonParser.parseArray(single);
+                List<Object> objects = new JsonParser().parseArray(single);
                 System.out.println("Result: ");
                 objects.forEach(System.out::println);
             }
@@ -82,11 +82,12 @@ class JsonParserTest {
         everything.add(object1);
         everything.add(JsonParser.readJson("src/test/big_object.json"));
         HashSet<Object> results = new HashSet<>(everything.size());
+        JsonParser jsonParser = new JsonParser();
         everything.forEach(s -> {
             if (s.startsWith("[")) {
-                results.add(JsonParser.parseArray(s));
+                results.add(jsonParser.parseArray(s));
             } else if (s.startsWith("{")) {
-                results.add(JsonParser.parseObject(s));
+                results.add(jsonParser.parseObject(s));
             }
         });
         results.forEach(o -> {

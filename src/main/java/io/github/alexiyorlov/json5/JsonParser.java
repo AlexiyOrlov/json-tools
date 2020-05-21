@@ -13,7 +13,7 @@ public class JsonParser {
      * @param input json
      * @return array
      */
-    public static List<Object> parseArray(String input) {
+    public List<Object> parseArray(String input) {
         List<Object> objects = new ArrayList<>();
 
         //first, split the string on commas
@@ -30,7 +30,7 @@ public class JsonParser {
     /**
      * Converts strings into Java objects if possible
      */
-    static Object convert(String value) {
+    Object convert(String value) {
         if (value.equals("null")) {
             return null;
         } else if (value.equals("true") || value.equals("false")) {
@@ -64,7 +64,7 @@ public class JsonParser {
      * @param input arrayString
      * @return list of elements as strings
      */
-    static List<String> parseElements(String input) {
+    List<String> parseElements(String input) {
         String string = "";
         boolean insideString = false;
         boolean insideArray = false;
@@ -139,7 +139,7 @@ public class JsonParser {
      *
      * @param input object as string
      */
-    public static Map<String, Object> parseObject(String input) {
+    public Map<String, Object> parseObject(String input) {
         Map<String, Object> objectMap = new HashMap<>();
 
         List<String> pairs = parsePairs(input);
@@ -197,7 +197,7 @@ public class JsonParser {
     /**
      * @return list of pairs in string form
      */
-    static List<String> parsePairs(String input) {
+    List<String> parsePairs(String input) {
         String string = "";
         boolean insideString = false;
         boolean insideObject = false;
