@@ -1,4 +1,4 @@
-package io.github.alexiyorlov.json5;
+package io.github.alexiyorlov.json;
 
 public class Pair<ONE, TWO> {
 

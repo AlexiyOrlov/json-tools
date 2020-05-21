@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.gihub.alexiyorlov</groupId>
-    <artifactId>json5-tools</artifactId>
+    <artifactId>json-tools</artifactId>
     <version>0.0.1</version>
     <dependencies>
         <dependency>

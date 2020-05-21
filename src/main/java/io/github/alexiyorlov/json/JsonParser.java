@@ -1,4 +1,4 @@
-package io.github.alexiyorlov.json5;
+package io.github.alexiyorlov.json;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
