@@ -224,7 +224,7 @@ public class JsonParser {
                 string += '[';
                 arrayCounter++;
             } else if (chr == ']') {
-                    insideArray = false;
+                insideArray = false;
                 string += ']';
                 arrayCounter--;
             } else if (chr == '"') {
@@ -247,8 +247,12 @@ public class JsonParser {
                 string += chr;
             }
         }
-        if (!string.isEmpty())
+        if (!string.isEmpty()) {
+            if (objectCounter > 0) {
+                string += '}';
+            }
             parts.add(string);
+        }
         return parts;
     }
 
