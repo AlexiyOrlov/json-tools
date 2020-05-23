@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -67,5 +68,16 @@ public class GraalJSTest
         Value v = context.eval("js", "parse('" + stringBuilder.toString() + "')");
         System.out.println(v.as(Map.class));
         context.close();
+    }
+
+    @Test
+    public void testOther()
+    {
+        Pair<Object, Context> array = new Json5Parser().parse(Paths.get("src/test/array0.json"));
+        System.out.println(array.getFirst());
+        array.getSecond().close();
+        Pair<Object, Context> object = new Json5Parser().parse(Paths.get("src/test/object3.json"));
+        System.out.println(object.getFirst());
+        object.getSecond().close();
     }
 }
