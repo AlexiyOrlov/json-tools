@@ -8,7 +8,7 @@
     <artifactId>json-tools</artifactId>
     <version>0.0.1</version>
     <name>JSON tools</name>
-    <description>Small library for parsing JSON data</description>
+    <description>A library for parsing JSON data</description>
     <licenses>
         <license>
             <name>Apache 2.0</name>
