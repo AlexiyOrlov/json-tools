@@ -28,10 +28,10 @@ public class GraalJSTest
         Source source = Source.newBuilder("js", new File(getClass().getClassLoader().getResource("parse.js").toURI())).build();
         context.eval(source);
         String dqs = "\"Str\\\"ing\"";
-        Value value = context.eval("js", "parse('[" + Json5Parser.handleQuotes(dqs) + "]')");
+        Value value = context.eval("js", "parse('[" + GraalJson5Parser.handleQuotes(dqs) + "]')");
         System.out.println(value);
         String sqs = "\"Str'ing\"";
-        value = context.eval("js", "parse('[" + Json5Parser.handleQuotes(sqs) + "]')");
+        value = context.eval("js", "parse('[" + GraalJson5Parser.handleQuotes(sqs) + "]')");
         System.out.println(value);
         context.close();
     }
@@ -48,8 +48,8 @@ public class GraalJSTest
         StringBuilder combined = new StringBuilder();
         for (String string : strings)
         {
-            string = Json5Parser.handleQuotes(string);
-            string = Json5Parser.handleUnicode(string);
+            string = GraalJson5Parser.handleQuotes(string);
+            string = GraalJson5Parser.handleUnicode(string);
             combined.append(string);
         }
         System.out.println("From: " + combined.toString());
@@ -61,8 +61,8 @@ public class GraalJSTest
         StringBuilder stringBuilder = new StringBuilder();
         for (String str : list)
         {
-            str = Json5Parser.handleQuotes(str);
-            str = Json5Parser.handleUnicode(str);
+            str = GraalJson5Parser.handleQuotes(str);
+            str = GraalJson5Parser.handleUnicode(str);
             stringBuilder.append(str);
         }
         Value v = context.eval("js", "parse('" + stringBuilder.toString() + "')");
@@ -73,10 +73,10 @@ public class GraalJSTest
     @Test
     public void testOther()
     {
-        Pair<Object, Context> array = new Json5Parser().parse(Paths.get("src/test/array0.json"));
+        Pair<Object, Context> array = new GraalJson5Parser().parse(Paths.get("src/test/array0.json"));
         System.out.println(array.getFirst());
         array.getSecond().close();
-        Pair<Object, Context> object = new Json5Parser().parse(Paths.get("src/test/object3.json"));
+        Pair<Object, Context> object = new GraalJson5Parser().parse(Paths.get("src/test/object3.json"));
         System.out.println(object.getFirst());
         object.getSecond().close();
     }

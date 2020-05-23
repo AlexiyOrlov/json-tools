@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created on 5/22/20.
  */
-public class Json5Parser
+public class GraalJson5Parser
 {
     /**
      * Parses a Json file. Context returned in the pair must be closed after manipulations with the object
