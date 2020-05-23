@@ -36,6 +36,12 @@
             <version>5.7.0-M1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.graalvm.js</groupId>
+            <artifactId>js</artifactId>
+            <version>20.1.0</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
@@ -47,6 +53,23 @@
                     <source>13</source>
                     <target>13</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <descriptorRefs>jar-with-dependencies</descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
