@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created on 5/22/20.
@@ -35,7 +36,7 @@ public class GraalJSTest
     }
 
     @Test
-    public void testJavaScriptParser() throws Exception
+    public void testJSON5Parser() throws Exception
     {
         Context context = Context.newBuilder("js").build();
         String version = context.getEngine().getLanguages().get("js").getVersion();
@@ -47,22 +48,24 @@ public class GraalJSTest
         for (String string : strings)
         {
             string = Json5Parser.handleQuotes(string);
-            if (string.contains("\\u"))
-            {
-                final int beginIndex = string.indexOf("\\u");
-                String sub = string.substring(beginIndex + 2, beginIndex + 6);
-                char c = (char) Integer.parseInt(sub, 16);
-                final String str = string.replaceFirst("\\\\u.{4}", String.valueOf(c));
-                combined.append(str);
-            }
-            else
-            {
-                combined.append(string);
-            }
+            string = Json5Parser.handleUnicode(string);
+            combined.append(string);
         }
         System.out.println("From: " + combined.toString());
         Value value = context.eval("js", "parse('" + combined.toString() + "')");
-        System.out.println("To: " + value);
+        System.out.println("To: " + value.as(List.class));
+        System.out.println();
+
+        List<String> list = Files.readAllLines(Path.of("src/test/big_object.json"));
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String str : list)
+        {
+            str = Json5Parser.handleQuotes(str);
+            str = Json5Parser.handleUnicode(str);
+            stringBuilder.append(str);
+        }
+        Value v = context.eval("js", "parse('" + stringBuilder.toString() + "')");
+        System.out.println(v.as(Map.class));
         context.close();
     }
 }

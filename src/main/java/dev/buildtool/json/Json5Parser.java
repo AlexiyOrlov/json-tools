@@ -26,4 +26,19 @@ public class Json5Parser
         }
         return input;
     }
+
+    /**
+     * Replaces unicode sequence with appropriate character
+     */
+    public static String handleUnicode(final String input)
+    {
+        if (input.contains("\\u"))
+        {
+            final int beginIndex = input.indexOf("\\u");
+            String sub = input.substring(beginIndex + 2, beginIndex + 6);
+            char c = (char) Integer.parseInt(sub, 16);
+            return input.replaceFirst("\\\\u.{4}", String.valueOf(c));
+        }
+        return input;
+    }
 }
