@@ -24,7 +24,7 @@ const util = {
 
     isIdStartChar (c) {
         return typeof c === 'string' && (
-            (c >= 'a' && c <= 'z') ||
+        (c >= 'a' && c <= 'z') ||
         (c >= 'A' && c <= 'Z') ||
         (c === '$') || (c === '_') ||
         ID_Start.test(c)
@@ -33,7 +33,7 @@ const util = {
 
     isIdContinueChar (c) {
         return typeof c === 'string' && (
-            (c >= 'a' && c <= 'z') ||
+        (c >= 'a' && c <= 'z') ||
         (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
         (c === '$') || (c === '_') ||
@@ -111,11 +111,6 @@ function lex () {
 
     for (;;) {
         c = peek()
-
-        // This code is unreachable.
-        // if (!lexStates[lexState]) {
-        //     throw invalidLexState(lexState)
-        // }
 
         const token = lexStates[lexState]()
         if (token) {
