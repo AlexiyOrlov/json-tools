@@ -195,7 +195,6 @@ public class Json5Parser
     void push()
     {
         Object value = null;
-        System.out.println(token.type);
         switch (token.type)
         {
             case "punctuator":
@@ -239,7 +238,39 @@ public class Json5Parser
             }
         }
 
-        System.out.println("Pushed :" + value);
+        //TODO check for correctness
+
+        if (value != null)
+        {
+            stack.add(value);
+            System.out.println(value.getClass());
+            if (value instanceof List)
+            {
+                parseState = "beforeArrayValue";
+            }
+            else
+            {
+                parseState = "beforePropertyName";
+            }
+        }
+        else
+        {
+            Object current = stack.get(stack.size() - 1);
+            if (current == null)
+            {
+                parseState = "end";
+            }
+            else if (current instanceof List)
+            {
+                parseState = "afterArrayValue";
+            }
+            else
+            {
+                parseState = "afterPropertyValue";
+            }
+        }
+
+        System.out.println("Pushed: " + value);
 
     }
 
@@ -906,7 +937,7 @@ public class Json5Parser
             return null;
         }
 
-        Token beforePropertyName() throws SyntaxError
+        Token beforePropertyName()
         {
             switch (c)
             {
@@ -933,10 +964,9 @@ public class Json5Parser
             {
                 buffer += read();
                 lexState = "identifierName";
-                return null;
             }
-
-            throw invalidChar(read());
+            return null;
+//            throw invalidChar(read());
         }
 
         Token afterPropertyName() throws SyntaxError
