@@ -13,12 +13,12 @@
   true,
   525256.2521554,
   [
-    'nested1,',
-    "nestedComma,",
+    'nest,ed1',
+    "nested,Comma",
     "nested2",
     [
-      "2nested",
-      "2nested2"
+      "nested21",
+      "nested22"
     ]
   ]
 ]

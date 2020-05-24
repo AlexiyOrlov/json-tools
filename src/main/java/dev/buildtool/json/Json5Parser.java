@@ -28,6 +28,9 @@ public class Json5Parser
     boolean doubleQuote;
     int sign;
     Token token;
+    /**
+     * Top array or object
+     */
     Object root;
     String key;
 
@@ -83,6 +86,11 @@ public class Json5Parser
         {
             System.out.println("Parse state: " + parseState);
             token = lex();
+            if (token == null)
+            {
+                System.out.println(stack);
+                break;
+            }
             parseStates.matchState(parseState);
         }
         while (!token.type.equals("eof"));
@@ -148,16 +156,18 @@ public class Json5Parser
         buffer = "";
         doubleQuote = false;
         sign = 1;
-        while (true)
+        while (pos < source.length())
         {
+
             c = peek();
-            System.out.println("Lex state: " + lexState);
+            System.out.println("Lexer state: " + lexState);
             Token token = lexStates.match(lexState);
             if (token != null)
             {
                 return token;
             }
         }
+        return null;
     }
 
     /**
@@ -175,7 +185,7 @@ public class Json5Parser
     char read()
     {
         char c = peek();
-        System.out.println("Next: " + c);
+//        System.out.println("Next: " + c);
         if (c == '\n')
         {
             line++;
@@ -190,7 +200,9 @@ public class Json5Parser
         return c;
     }
 
-    //FIXME
+    /**
+     * Adds element to the stak
+     */
     @SuppressWarnings("unchecked")
     void push()
     {
@@ -225,25 +237,27 @@ public class Json5Parser
         }
         else
         {
-            Object parent = stack.get(stack.size() - 1);
-            if (parent instanceof List)
+            if (stack.size() > 0)
             {
-                List<Object> list = (List<Object>) parent;
-                list.add(value);
-            }
-            else
-            {
-                Map<String, Object> map = (Map<String, Object>) parent;
-                map.put(key, value);
+                Object parent = stack.get(stack.size() - 1);
+                if (parent instanceof List)
+                {
+                    ((List) parent).add(value);
+                }
+                else if (parent instanceof Map)
+                {
+                    ((Map) parent).put(key, value);
+                }
             }
         }
 
-        //TODO check for correctness
-
         if (value != null)
         {
-            stack.add(value);
-            System.out.println(value.getClass());
+            if (value != root)
+            {
+                stack.add(value);
+                System.out.println("Pushed: " + value);
+            }
             if (value instanceof List)
             {
                 parseState = "beforeArrayValue";
@@ -252,25 +266,32 @@ public class Json5Parser
             {
                 parseState = "beforePropertyName";
             }
-        }
-        else
-        {
-            Object current = stack.get(stack.size() - 1);
-            if (current == null)
-            {
-                parseState = "end";
-            }
-            else if (current instanceof List)
+            else
             {
                 parseState = "afterArrayValue";
             }
-            else if (current instanceof Map)
+        }
+        else
+        {
+            Object currentInStack = stack.get(stack.size() - 1);
+
+            System.out.println("REST");
+            if (currentInStack instanceof List)
+            {
+                parseState = "afterArrayValue";
+            }
+            else if (currentInStack instanceof Map)
             {
                 parseState = "afterPropertyValue";
             }
+            else
+            {
+                System.out.println("Current 1: " + currentInStack);
+                parseState = "afterArrayValue";
+            }
+
         }
 
-        System.out.println("Pushed: " + value);
 
     }
 
@@ -278,38 +299,43 @@ public class Json5Parser
      * Removes last element from the stack
      * FIXME
      */
+    @SuppressWarnings("unchecked")
     void pop()
     {
-        stack.remove(stack.size() - 1);
-        Object current = stack.get(stack.size() - 1);
-        if (current == null)
-        {
-            parseState = "end";
-        }
-        else if (current instanceof List)
+
+        Object currentInStack = stack.remove(stack.size() - 1);
+//        Object currentInStack=stack.get(stack.size()-1);
+
+        System.out.println("Current 2: " + currentInStack);
+        if (currentInStack instanceof List)
         {
             parseState = "afterArrayValue";
         }
-        else if (current instanceof Map)
+        else if (currentInStack instanceof Map)
         {
             parseState = "afterPropertyValue";
         }
+        else
+        {
+            parseState = "afterArrayValue";
+        }
+
     }
 
     SyntaxError invalidChar(char c)
     {
-        return new SyntaxError("JSON5: invalid character " + formatChar(c) + " at " + line + ":" + column);
+        return new SyntaxError("JSON5 - invalid character " + formatChar(c) + " at " + line + ":" + column);
     }
 
     SyntaxError invalidEOF()
     {
-        return new SyntaxError("JSON5: invalid end of input at " + line + ":" + column);
+        return new SyntaxError("JSON5 - invalid end of input at " + line + ":" + column);
     }
 
     SyntaxError invalidIdentifier()
     {
         column -= 5;
-        return new SyntaxError("JSON5: invalid identifier character at " + line + ":" + column);
+        return new SyntaxError("JSON5 - invalid identifier character at " + line + ":" + column);
     }
 
     Token newToken(String type, Object value)
@@ -355,7 +381,6 @@ public class Json5Parser
     {
         Token match(String lexState) throws SyntaxError
         {
-//            System.out.println(lexState);
             //TODO
             switch (lexState)
             {
@@ -442,8 +467,6 @@ public class Json5Parser
                     read();
                     lexState = "comment";
                     return null;
-//                default:
-//                    return new Token("eof",null);
             }
 
             if (isSpaceSeparator(String.valueOf(c)))
@@ -451,7 +474,7 @@ public class Json5Parser
                 read();
                 return null;
             }
-            return lexStates.match(parseState);
+            return match(parseState);
         }
 
         Token comment() throws SyntaxError
@@ -938,7 +961,7 @@ public class Json5Parser
             return null;
         }
 
-        Token beforePropertyName()
+        Token beforePropertyName() throws SyntaxError
         {
             switch (c)
             {
@@ -966,8 +989,8 @@ public class Json5Parser
                 buffer += read();
                 lexState = "identifierName";
             }
-            return null;
-//            throw invalidChar(read());
+//            return null;
+            throw invalidChar(read());
         }
 
         Token afterPropertyName() throws SyntaxError
@@ -983,7 +1006,6 @@ public class Json5Parser
         Token beforePropertyValue()
         {
             lexState = "value";
-//            System.out.println(2);
             return null;
         }
 
@@ -1003,7 +1025,7 @@ public class Json5Parser
         {
             if (c == ']')
             {
-                return newToken("beforeArrayValue", read());
+                return newToken("punctuator", read());
             }
             lexState = "value";
 //            System.out.println(3);
@@ -1057,8 +1079,6 @@ public class Json5Parser
                 case "afterArrayValue":
                     afterArrayValue();
                     break;
-                default:
-                    end();
             }
         }
 
@@ -1079,10 +1099,10 @@ public class Json5Parser
                 case "string":
                     key = String.valueOf(token.value);
                     parseState = "afterPropertyName";
-                    break;
+                    return;
                 case "punctuator":
                     pop();
-                    break;
+                    return;
                 case "eof":
                     throw invalidEOF();
             }
@@ -1135,7 +1155,7 @@ public class Json5Parser
             {
                 case ",":
                     parseState = "beforePropertyName";
-                    break;
+                    return;
                 case "}":
                     pop();
             }
@@ -1152,28 +1172,22 @@ public class Json5Parser
             {
                 case ",":
                     parseState = "beforeArrayValue";
-                    break;
+                    return;
                 case "]":
                     pop();
             }
-        }
-
-        void end()
-        {
-
         }
     }
 
     class SyntaxError extends Exception
     {
-        String message;
         int lineNumber, columnNumber;
 
         SyntaxError(String message_)
         {
+            super(message_);
             this.lineNumber = line;
             this.columnNumber = column;
-            message = message_;
         }
     }
 

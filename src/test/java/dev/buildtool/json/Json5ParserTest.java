@@ -11,8 +11,9 @@ public class Json5ParserTest
     @Test
     public void testParse() throws Json5Parser.SyntaxError
     {
-        String array = JsonParser.readJson("src/test/array5.json5");
+        String array = JsonParser.readJson("src/test/array5.json5", true);
         Json5Parser json5Parser = new Json5Parser();
-        System.out.println(json5Parser.parse(array));
+        Object result = json5Parser.parse(array);
+        System.out.println("Result: " + result);
     }
 }

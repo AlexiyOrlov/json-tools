@@ -1000,15 +1000,6 @@ function pop () {
     }
 }
 
-// This code is unreachable.
-// function invalidParseState () {
-//     return new Error(`JSON5: invalid parse state '${parseState}'`)
-// }
-
-// This code is unreachable.
-// function invalidLexState (state) {
-//     return new Error(`JSON5: invalid lex state '${state}'`)
-// }
 
 function invalidChar (c) {
     if (c === undefined) {
@@ -1022,15 +1013,6 @@ function invalidEOF () {
     return syntaxError(`JSON5: invalid end of input at ${line}:${column}`)
 }
 
-// This code is unreachable.
-// function invalidToken () {
-//     if (token.type === 'eof') {
-//         return syntaxError(`JSON5: invalid end of input at ${line}:${column}`)
-//     }
-
-//     const c = String.fromCodePoint(token.value.codePointAt(0))
-//     return syntaxError(`JSON5: invalid character '${formatChar(c)}' at ${line}:${column}`)
-// }
 
 function invalidIdentifier () {
     column -= 5

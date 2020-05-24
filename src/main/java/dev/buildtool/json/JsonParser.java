@@ -260,17 +260,25 @@ public class JsonParser {
     }
 
     /**
-     * @param file file path
+     * @param file       file path
+     * @param withBreaks
      * @return Json as string
      */
-    public static String readJson(String file) {
-        try {
+    public static String readJson(String file, boolean withBreaks)
+    {
+        try
+        {
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String string;
             StringBuilder builder = new StringBuilder();
-            while ((string = bufferedReader.readLine()) != null) {
+            while ((string = bufferedReader.readLine()) != null)
+            {
                 builder.append(string);
+                if (withBreaks)
+                {
+                    builder.append('\n');
+                }
             }
             fileReader.close();
             bufferedReader.close();
