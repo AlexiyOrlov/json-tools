@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
  */
 public class Json5Parser
 {
+    public static final String BEFORE_PROPERTY_NAME = "beforePropertyName";
+    public static final String AFTER_PROPERTY_VALUE = "afterPropertyValue";
     String source;
     String parseState;
 
@@ -19,7 +21,7 @@ public class Json5Parser
     int column;
     char c;
 
-    //array in Javascript TODO correct type
+    //array in Javascript
     List<Object> stack;
 
     String lexState;
@@ -88,7 +90,6 @@ public class Json5Parser
             token = lex();
             if (token == null)
             {
-                System.out.println(stack);
                 break;
             }
             parseStates.matchState(parseState);
@@ -102,7 +103,6 @@ public class Json5Parser
     char escape()
     {
         char c = peek();
-//        System.out.println((int) c);
         switch (c)
         {
 
@@ -160,7 +160,7 @@ public class Json5Parser
         {
 
             c = peek();
-            System.out.println("Lexer state: " + lexState);
+//            System.out.println("Lexer state: " + lexState);
             Token token = lexStates.match(lexState);
             if (token != null)
             {
@@ -185,7 +185,6 @@ public class Json5Parser
     char read()
     {
         char c = peek();
-//        System.out.println("Next: " + c);
         if (c == '\n')
         {
             line++;
@@ -260,8 +259,7 @@ public class Json5Parser
             }
             else
             {
-                parseState = "beforePropertyName";
-//                parseState = "beforePropertyValue";
+                parseState = BEFORE_PROPERTY_NAME;
             }
         }
         else
@@ -273,14 +271,13 @@ public class Json5Parser
             }
             else if (current instanceof Map)
             {
-                parseState = "afterPropertyValue";
+                parseState = AFTER_PROPERTY_VALUE;
             }
         }
     }
 
     /**
      * Removes last element from the stack
-     * FIXME
      */
     void pop()
     {
@@ -293,13 +290,8 @@ public class Json5Parser
         }
         else if (currentInStack instanceof Map)
         {
-            parseState = "afterPropertyValue";
+            parseState = AFTER_PROPERTY_VALUE;
         }
-//        else
-//        {
-//            parseState="afterArrayValue";
-//        }
-
     }
 
     SyntaxError invalidChar(char c)
@@ -338,10 +330,9 @@ public class Json5Parser
     }
 
 
-    //TODO
-
     /**
      * Used only in messages
+     * TODO
      */
     static char formatChar(char c)
     {
@@ -361,7 +352,6 @@ public class Json5Parser
     {
         Token match(String lexState) throws SyntaxError
         {
-            //TODO
             switch (lexState)
             {
                 case "default":
@@ -406,13 +396,13 @@ public class Json5Parser
                     return value();
                 case "start":
                     return start();
-                case "beforePropertyName":
+                case BEFORE_PROPERTY_NAME:
                     return beforePropertyName();
                 case "beforePropertyValue":
                     return beforePropertyValue();
                 case "beforeArrayValue":
                     return beforeArrayValue();
-                case "afterPropertyValue":
+                case AFTER_PROPERTY_VALUE:
                     return afterPropertyValue();
                 case "afterPropertyName":
                     return afterPropertyName();
@@ -592,7 +582,6 @@ public class Json5Parser
                     return null;
             }
             return null;
-//            throw invalidChar(read());
         }
 
         Token identifierNameStartEscape() throws SyntaxError
@@ -937,7 +926,6 @@ public class Json5Parser
             }
 
             lexState = "value";
-//            System.out.println(1);
             return null;
         }
 
@@ -962,6 +950,12 @@ public class Json5Parser
                     doubleQuote = (read() == '"');
                     lexState = "string";
                     return null;
+                case '[': //TODO switch to array parsing
+                    if (parseState.equals(BEFORE_PROPERTY_NAME))
+                    {
+                        parseState = "beforeArrayValue";
+                        return null;
+                    }
             }
 
             if (isIdStartChar(c))
@@ -969,7 +963,6 @@ public class Json5Parser
                 buffer += read();
                 lexState = "identifierName";
             }
-
             throw invalidChar(read());
         }
 
@@ -1018,6 +1011,12 @@ public class Json5Parser
                 case ',':
                 case ']':
                     return newToken("punctuator", read());
+                case '}':
+                    if (parseState.equals("afterArrayValue"))
+                    {
+                        parseState = AFTER_PROPERTY_VALUE;
+                        return null;
+                    }
             }
 
             throw invalidChar(read());
@@ -1040,7 +1039,7 @@ public class Json5Parser
                 case "start":
                     start();
                     break;
-                case "beforePropertyName":
+                case BEFORE_PROPERTY_NAME:
                     beforePropertyName();
                     break;
                 case "afterPropertyName":
@@ -1052,7 +1051,7 @@ public class Json5Parser
                 case "beforeArrayValue":
                     beforeArrayValue();
                     break;
-                case "afterPropertyValue":
+                case AFTER_PROPERTY_VALUE:
                     afterPropertyValue();
                     break;
                 case "afterArrayValue":
@@ -1133,7 +1132,7 @@ public class Json5Parser
             switch (String.valueOf(token.value))
             {
                 case ",":
-                    parseState = "beforePropertyName";
+                    parseState = BEFORE_PROPERTY_NAME;
                     return;
                 case "}":
                     pop();
