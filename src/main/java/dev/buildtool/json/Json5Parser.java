@@ -203,7 +203,7 @@ public class Json5Parser
     /**
      * Adds element to the stak
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     void push()
     {
         Object value = null;
@@ -251,62 +251,41 @@ public class Json5Parser
             }
         }
 
-        if (value != null)
+        if ((value instanceof Map || value instanceof List))
         {
-            if (value != root)
-            {
-                stack.add(value);
-                System.out.println("Pushed: " + value);
-            }
+            stack.add(value);
             if (value instanceof List)
             {
                 parseState = "beforeArrayValue";
             }
-            else if (value instanceof Map)
-            {
-                parseState = "beforePropertyName";
-            }
             else
             {
-                parseState = "afterArrayValue";
+                parseState = "beforePropertyName";
             }
         }
         else
         {
-            Object currentInStack = stack.get(stack.size() - 1);
-
-            System.out.println("REST");
-            if (currentInStack instanceof List)
+            Object current = stack.get(stack.size() - 1);
+            if (current instanceof List)
             {
                 parseState = "afterArrayValue";
             }
-            else if (currentInStack instanceof Map)
+            else if (current instanceof Map)
             {
                 parseState = "afterPropertyValue";
             }
-            else
-            {
-                System.out.println("Current 1: " + currentInStack);
-                parseState = "afterArrayValue";
-            }
-
         }
-
-
     }
 
     /**
      * Removes last element from the stack
      * FIXME
      */
-    @SuppressWarnings("unchecked")
     void pop()
     {
 
         Object currentInStack = stack.remove(stack.size() - 1);
-//        Object currentInStack=stack.get(stack.size()-1);
 
-        System.out.println("Current 2: " + currentInStack);
         if (currentInStack instanceof List)
         {
             parseState = "afterArrayValue";
@@ -315,10 +294,10 @@ public class Json5Parser
         {
             parseState = "afterPropertyValue";
         }
-        else
-        {
-            parseState = "afterArrayValue";
-        }
+//        else
+//        {
+//            parseState="afterArrayValue";
+//        }
 
     }
 

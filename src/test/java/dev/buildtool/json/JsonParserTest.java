@@ -52,7 +52,9 @@ public class JsonParserTest {
             if (s.startsWith("["))
             {
                 results.add(jsonParser.parseArray(s));
-            } else if (s.startsWith("{")) {
+            }
+            else if (s.startsWith("{"))
+            {
                 results.add(jsonParser.parseObject(s));
             }
         });
