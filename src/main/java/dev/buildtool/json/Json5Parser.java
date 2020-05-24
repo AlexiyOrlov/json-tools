@@ -19,7 +19,7 @@ public class Json5Parser
     int column;
     char c;
 
-    //array in Javascript
+    //array in Javascript TODO correct type
     List<Object> stack;
 
     String lexState;
@@ -190,7 +190,7 @@ public class Json5Parser
         return c;
     }
 
-    //TODO
+    //FIXME
     @SuppressWarnings("unchecked")
     void push()
     {
@@ -248,7 +248,7 @@ public class Json5Parser
             {
                 parseState = "beforeArrayValue";
             }
-            else
+            else if (value instanceof Map)
             {
                 parseState = "beforePropertyName";
             }
@@ -264,7 +264,7 @@ public class Json5Parser
             {
                 parseState = "afterArrayValue";
             }
-            else
+            else if (current instanceof Map)
             {
                 parseState = "afterPropertyValue";
             }
@@ -276,6 +276,7 @@ public class Json5Parser
 
     /**
      * Removes last element from the stack
+     * FIXME
      */
     void pop()
     {
@@ -289,7 +290,7 @@ public class Json5Parser
         {
             parseState = "afterArrayValue";
         }
-        else
+        else if (current instanceof Map)
         {
             parseState = "afterPropertyValue";
         }
