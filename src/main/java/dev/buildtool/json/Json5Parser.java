@@ -886,9 +886,6 @@ public class Json5Parser
                 case '\u2029':
                     separatorChar(c);
                     break;
-
-                default:
-                    throw invalidChar(read());
             }
             buffer += read();
             return null;
