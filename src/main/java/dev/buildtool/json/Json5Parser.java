@@ -157,10 +157,6 @@ public class Json5Parser
             {
                 return token;
             }
-            else
-            {
-                read();
-            }
         }
     }
 
