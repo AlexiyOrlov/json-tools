@@ -86,7 +86,6 @@ public class Json5Parser
         column = 0;
         do
         {
-            System.out.println("Parse state: " + parseState);
             token = lex();
             if (token == null)
             {
@@ -160,7 +159,6 @@ public class Json5Parser
         {
 
             c = peek();
-//            System.out.println("Lexer state: " + lexState);
             Token token = lexStates.match(lexState);
             if (token != null)
             {
@@ -296,7 +294,7 @@ public class Json5Parser
 
     SyntaxError invalidChar(char c)
     {
-        return new SyntaxError("JSON5 - invalid character " + formatChar(c) + " at " + line + ":" + column);
+        return new SyntaxError("JSON5 - invalid character " + formatChar(c) + " at " + line + ":" + column + "; parser state - " + parseState + ", lexer state - " + lexState);
     }
 
     SyntaxError invalidEOF()
@@ -950,12 +948,19 @@ public class Json5Parser
                     doubleQuote = (read() == '"');
                     lexState = "string";
                     return null;
-                case '[': //TODO switch to array parsing
-                    if (parseState.equals(BEFORE_PROPERTY_NAME))
-                    {
-                        parseState = "beforeArrayValue";
-                        return null;
-                    }
+//                case '[': //TODO switch to array parsing
+//                    if (parseState.equals(BEFORE_PROPERTY_NAME))
+//                    {
+//                        parseState = "beforeArrayValue";
+//                        return null;
+//                    }
+//                case '{':
+//                    if(parseState.equals(BEFORE_PROPERTY_NAME))
+//                    {
+//                        parseState="beforeArrayValue";
+//                        return null;
+//                    }
+
             }
 
             if (isIdStartChar(c))
@@ -989,6 +994,12 @@ public class Json5Parser
                 case ',':
                 case '}':
                     return newToken("punctuator", read());
+//                case ']': //TODO
+//                    read();
+//                    return null;
+//                    lexState="value";
+//                    return null;
+//                    return newToken("value",read());
             }
 
             throw invalidChar(read());
@@ -1011,12 +1022,15 @@ public class Json5Parser
                 case ',':
                 case ']':
                     return newToken("punctuator", read());
-                case '}':
-                    if (parseState.equals("afterArrayValue"))
-                    {
-                        parseState = AFTER_PROPERTY_VALUE;
-                        return null;
-                    }
+//                case '}': //TODO
+//                    read();
+//                    return newToken("value",read());
+//                    return newToken("punctuator",read());
+//                    if (parseState.equals("afterArrayValue"))
+//                    {
+//                        parseState = AFTER_PROPERTY_VALUE;
+//                        return null;
+//                    }
             }
 
             throw invalidChar(read());

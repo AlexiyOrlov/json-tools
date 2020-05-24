@@ -20,11 +20,15 @@ public class Json5ParserTest
         String object = JsonParser.readJson("src/test/object.json5", true);
         String arrayWithObject = JsonParser.readJson("src/test/array0.json", true);
         String objectWithArray = JsonParser.readJson("src/test/object0.json", true);
+        String bigObject = JsonParser.readJson("src/test/big_object.json", true);
+        String object5 = JsonParser.readJson("src/test/object5.json5", true);
         ArrayList<Object> results = new ArrayList<>();
-        results.add(new Json5Parser().parse(array));
-        results.add(new Json5Parser().parse(arrayWithObject));
-        results.add(new Json5Parser().parse(object));
-        results.add(new Json5Parser().parse(objectWithArray));
+//        results.add(new Json5Parser().parse(bigObject));
+        results.add(new Json5Parser().parse(object5));
+//        results.add(new Json5Parser().parse(array));
+//        results.add(new Json5Parser().parse(arrayWithObject));
+//        results.add(new Json5Parser().parse(object));
+//        results.add(new Json5Parser().parse(objectWithArray));
         System.out.println("Results: ");
         results.forEach(result -> {
             if (result instanceof List)
