@@ -1,0 +1,10 @@
+{
+  "key1": "value1",
+  "key2": true,
+  "key3:": 45,
+  "key4": "value4:",
+  "nestedObject": {
+    "nestedKey1": null,
+    "nestedKey2": 67.8
+  }
+}

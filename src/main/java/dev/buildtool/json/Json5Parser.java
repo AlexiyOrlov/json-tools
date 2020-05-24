@@ -261,6 +261,7 @@ public class Json5Parser
             else
             {
                 parseState = "beforePropertyName";
+//                parseState = "beforePropertyValue";
             }
         }
         else
@@ -968,7 +969,7 @@ public class Json5Parser
                 buffer += read();
                 lexState = "identifierName";
             }
-//            return null;
+
             throw invalidChar(read());
         }
 
@@ -1007,7 +1008,6 @@ public class Json5Parser
                 return newToken("punctuator", read());
             }
             lexState = "value";
-//            System.out.println(3);
             return null;
         }
 
