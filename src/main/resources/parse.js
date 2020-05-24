@@ -66,11 +66,6 @@ function parse (text, reviver) {
     do {
         token = lex()
 
-        // This code is unreachable.
-        // if (!parseStates[parseState]) {
-        //     throw invalidParseState()
-        // }
-
         parseStates[parseState]()
     } while (token.type !== 'eof')
 
@@ -174,11 +169,6 @@ const lexStates = {
             read()
             return
         }
-
-        // This code is unreachable.
-        // if (!lexStates[parseState]) {
-        //     throw invalidLexState(parseState)
-        // }
 
         return lexStates[parseState]()
     },
@@ -628,10 +618,6 @@ const lexStates = {
         case '{':
         case '[':
             return newToken('punctuator', read())
-
-        // This code is unreachable since the default lexState handles eof.
-        // case undefined:
-        //     return newToken('eof')
         }
 
         lexState = 'value'
@@ -710,11 +696,6 @@ const lexStates = {
     },
 
     end () {
-        // This code is unreachable since it's handled by the default lexState.
-        // if (c === undefined) {
-        //     read()
-        //     return newToken('eof')
-        // }
 
         throw invalidChar(read())
     },
@@ -870,10 +851,6 @@ const parseStates = {
             return
 
         case 'punctuator':
-            // This code is unreachable since it's handled by the lexState.
-            // if (token.value !== '}') {
-            //     throw invalidToken()
-            // }
 
             pop()
             return
@@ -881,16 +858,9 @@ const parseStates = {
         case 'eof':
             throw invalidEOF()
         }
-
-        // This code is unreachable since it's handled by the lexState.
-        // throw invalidToken()
     },
 
     afterPropertyName () {
-        // This code is unreachable since it's handled by the lexState.
-        // if (token.type !== 'punctuator' || token.value !== ':') {
-        //     throw invalidToken()
-        // }
 
         if (token.type === 'eof') {
             throw invalidEOF()
@@ -921,10 +891,6 @@ const parseStates = {
     },
 
     afterPropertyValue () {
-        // This code is unreachable since it's handled by the lexState.
-        // if (token.type !== 'punctuator') {
-        //     throw invalidToken()
-        // }
 
         if (token.type === 'eof') {
             throw invalidEOF()
@@ -939,16 +905,9 @@ const parseStates = {
             pop()
         }
 
-        // This code is unreachable since it's handled by the lexState.
-        // throw invalidToken()
     },
 
     afterArrayValue () {
-        // This code is unreachable since it's handled by the lexState.
-        // if (token.type !== 'punctuator') {
-        //     throw invalidToken()
-        // }
-
         if (token.type === 'eof') {
             throw invalidEOF()
         }
@@ -962,8 +921,6 @@ const parseStates = {
             pop()
         }
 
-        // This code is unreachable since it's handled by the lexState.
-        // throw invalidToken()
     },
 
     end () {
@@ -997,10 +954,6 @@ function push () {
     case 'string':
         value = token.value
         break
-
-    // This code is unreachable.
-    // default:
-    //     throw invalidToken()
     }
 
     if (root === undefined) {
