@@ -31,6 +31,11 @@ public class Json5ParserTest
         results.add(new Json5Parser().parse(object5));
         results.add(new Json5Parser().parse(objectWithArray));
         results.add(new Json5Parser().parse(officialExample));
+        results.add(new Json5Parser().parse(JsonParser.readJson("src/test/array.json", true)));
+        results.add(new Json5Parser().parse(JsonParser.readJson("src/test/object1.json", true)));
+        results.add(new Json5Parser().parse(JsonParser.readJson("src/test/object2.json", true)));
+        results.add(new Json5Parser().parse(JsonParser.readJson("src/test/object3.json", true)));
+        results.add(new Json5Parser().parse(JsonParser.readJson("src/test/object5.json5", true)));
         System.out.println("Results: ");
         results.forEach(result -> {
             if (result instanceof List)
