@@ -1,7 +1,5 @@
 package dev.buildtool.json;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +10,7 @@ import java.util.Map;
  * Use {@link #parseObject} if the input is an object, and {@link #parseArray}
  * if the input is an array
  */
+@Deprecated
 public class JsonParser {
 
     /**
@@ -260,34 +259,4 @@ public class JsonParser {
         return parts;
     }
 
-    /**
-     * @param file       file path
-     * @param withBreaks whether to include line breaks
-     * @return Json as string
-     */
-    public static String readJson(String file, boolean withBreaks)
-    {
-        try
-        {
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String string;
-            StringBuilder builder = new StringBuilder();
-            while ((string = bufferedReader.readLine()) != null)
-            {
-                builder.append(string);
-                if (withBreaks)
-                {
-                    builder.append('\n');
-                }
-            }
-            fileReader.close();
-            bufferedReader.close();
-            return builder.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
-    }
 }

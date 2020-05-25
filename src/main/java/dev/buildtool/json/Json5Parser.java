@@ -1,5 +1,7 @@
 package dev.buildtool.json;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +78,39 @@ public class Json5Parser
     static void separatorChar(char c)
     {
         System.out.println("JSON5: " + formatChar(c) + " in strings is not valid ECMAScript; consider escaping");
+    }
+
+    /**
+     * @param file       file path
+     * @param withBreaks whether to include line breaks
+     * @return Json as string
+     */
+    public static String readJson(String file, boolean withBreaks)
+    {
+        try
+        {
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String string;
+            StringBuilder builder = new StringBuilder();
+            while ((string = bufferedReader.readLine()) != null)
+            {
+                builder.append(string);
+                if (withBreaks)
+                {
+                    builder.append('\n');
+                }
+            }
+            fileReader.close();
+            bufferedReader.close();
+            return builder.toString();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     /**
