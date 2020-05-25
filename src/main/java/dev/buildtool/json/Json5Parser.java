@@ -132,23 +132,40 @@ public class Json5Parser
                     throw invalidChar(read());
                 }
                 return '\0';
-//            case 'x':
-//                read();
-//                return hexEscape();
+            case 'x':
+                read();
+                return hexEscape();
 //
-//            case 'u':
-//                read();
-//                return unicodeEscape();
+            case 'u':
+                read();
+                return unicodeEscape();
 //            case '\n':
 //            case '\u2028':
 //            case '\u2029':
 //                read();
 //                return ''
+//            case '\r':
+//                read();
+//                if (peek() == '\n') {
+//                    read();
+//                }
+//
+//                return '';
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                throw invalidChar(read());
         }
         return read();
     }
 
-    String hexEscape() throws SyntaxError
+    char hexEscape() throws SyntaxError
     {
         StringBuilder stringBuilder = new StringBuilder();
         char c = peek();
@@ -168,10 +185,10 @@ public class Json5Parser
 
         stringBuilder.append(read());
 
-        return String.valueOf(Integer.parseInt(stringBuilder.toString(), 16));
+        return (char) Integer.parseInt(stringBuilder.toString(), 16);
     }
 
-    String unicodeEscape() throws SyntaxError
+    char unicodeEscape() throws SyntaxError
     {
         StringBuilder buffer = new StringBuilder();
         int count = 4;
@@ -185,7 +202,7 @@ public class Json5Parser
             buffer.append(read());
         }
 
-        return String.valueOf(Integer.parseInt(buffer.toString(), 16));
+        return (char) Integer.parseInt(buffer.toString(), 16);
     }
 
     Token lex() throws SyntaxError
@@ -336,7 +353,7 @@ public class Json5Parser
 
     SyntaxError invalidChar(char c)
     {
-        return new SyntaxError("JSON5 - invalid character " + formatChar(c) + " at " + line + ":" + column + "; parser state - " + parseState + ", lexer state - " + lexState);
+        return new SyntaxError("JSON5 - invalid character " + formatChar(c) + " at " + line + ":" + column + "; parser state = " + parseState + ", lexer state = " + lexState);
     }
 
     SyntaxError invalidEOF()
@@ -632,15 +649,15 @@ public class Json5Parser
             }
 
             read();
-            final String u = unicodeEscape();
+            final char u = unicodeEscape();
 
             switch (u)
             {
-                case "$":
-                case "_":
+                case '$':
+                case '_':
                     break;
                 default:
-                    if (!isIdStartChar(u.charAt(0)))
+                    if (!isIdStartChar(u))
                     {
                         throw invalidIdentifier();
                     }
@@ -685,17 +702,17 @@ public class Json5Parser
             }
 
             read();
-            final String u = unicodeEscape();
+            final char u = unicodeEscape();
             switch (u)
             {
 
-                case "$":
-                case "_":
-                case "\u200C":
-                case "\u200D":
+                case '$':
+                case '_':
+                case '\u200C':
+                case '\u200D':
                     break;
                 default:
-                    if (!Json5Parser.isIdContinueChar(u.charAt(0)))
+                    if (!Json5Parser.isIdContinueChar(u))
                     {
                         throw invalidIdentifier();
                     }
