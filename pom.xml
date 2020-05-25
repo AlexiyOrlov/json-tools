@@ -24,7 +24,8 @@
     </developers>
     <scm>
         <connection>scm:git:git://github.com/AlexiyOrlov/json-tools.git</connection>
-        <developerConnection>scm:git:ssh://github.com:AlexiyOrlov/json-tools.git</developerConnection>
+        <!--        not sure if this one is correct -->
+        <!--        <developerConnection>scm:git:ssh://github.com:AlexiyOrlov/json-tools.git</developerConnection>-->
         <url>https://github.com/AlexiyOrlov/json-tools</url>
     </scm>
     <properties>
