@@ -93,7 +93,7 @@ public class Json5Parser
         pos = 0;
         line = 1;
         column = 0;
-        do
+        while (true)
         {
             token = lex();
             if (token == null)
@@ -102,7 +102,6 @@ public class Json5Parser
             }
             parseStates.matchState(parseState);
         }
-        while (!token.type.equals("eof"));
 
         return root;
     }
