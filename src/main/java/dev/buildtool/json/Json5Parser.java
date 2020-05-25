@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * Created on 5/23/20.
+ * An adaptation of original parser from <a>https://github.com/json5/json5</a>.
  */
 public class Json5Parser
 {

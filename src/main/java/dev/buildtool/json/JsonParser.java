@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A primitive JSON parser. Use {@link #parseObject} if the input is an object, and {@link #parseArray}
+ * A primitive JSON parser, custom implementation - prefer {@link Json5Parser} instead.
+ * Use {@link #parseObject} if the input is an object, and {@link #parseArray}
  * if the input is an array
  */
 public class JsonParser {
