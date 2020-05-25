@@ -112,16 +112,23 @@ public class Json5Parser
         }
     }
 
+    public Json5Parser(String source)
+    {
+        this.source = source;
+    }
+
     /**
      * Parses a JSON5 string
      *
-     * @param text Json string
      * @return a {@link List} if input is an array, or {@link Map} if input is an object
      * @throws SyntaxError if the next character is invalid
      */
-    public Object parse(String text) throws SyntaxError
+    public Object parse() throws SyntaxError
     {
-        source = text;
+        if (root != null)
+        {
+            throw new IllegalStateException("This parser instance already finished parsing");
+        }
         parseState = "start";
         stack = new ArrayList<>();
         pos = 0;

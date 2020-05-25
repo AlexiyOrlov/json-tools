@@ -24,18 +24,19 @@ public class Json5ParserTest
         String object5 = Json5Parser.readJson("src/test/object5.json5", true);
         String officialExample = Json5Parser.readJson("src/test/example.json5", true);
         ArrayList<Object> results = new ArrayList<>();
-        results.add(new Json5Parser().parse(bigObject));
-        results.add(new Json5Parser().parse(array));
-        results.add(new Json5Parser().parse(arrayWithObject));
-        results.add(new Json5Parser().parse(object));
-        results.add(new Json5Parser().parse(object5));
-        results.add(new Json5Parser().parse(objectWithArray));
-        results.add(new Json5Parser().parse(officialExample));
-        results.add(new Json5Parser().parse(Json5Parser.readJson("src/test/array.json", true)));
-        results.add(new Json5Parser().parse(Json5Parser.readJson("src/test/object1.json", true)));
-        results.add(new Json5Parser().parse(Json5Parser.readJson("src/test/object2.json", true)));
-        results.add(new Json5Parser().parse(Json5Parser.readJson("src/test/object3.json", true)));
-        results.add(new Json5Parser().parse(Json5Parser.readJson("src/test/object5.json5", true)));
+        results.add(new Json5Parser(bigObject).parse());
+        results.add(new Json5Parser(array).parse());
+        results.add(new Json5Parser(arrayWithObject).parse());
+        results.add(new Json5Parser(object).parse());
+        results.add(new Json5Parser(object5).parse());
+        results.add(new Json5Parser(objectWithArray).parse());
+        results.add(new Json5Parser(officialExample).parse());
+        results.add(new Json5Parser(Json5Parser.readJson("src/test/array.json", true)).parse());
+        results.add(new Json5Parser(Json5Parser.readJson("src/test/object1.json", true)).parse());
+        results.add(new Json5Parser(Json5Parser.readJson("src/test/object2.json", true)).parse());
+        results.add(new Json5Parser(Json5Parser.readJson("src/test/object5.json5", true)).parse());
+        final Json5Parser parser = new Json5Parser(Json5Parser.readJson("src/test/object3.json", true));
+        results.add(parser.parse());
         System.out.println("Results: ");
         results.forEach(result -> {
             if (result instanceof List)
