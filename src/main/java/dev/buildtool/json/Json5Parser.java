@@ -873,7 +873,7 @@ public class Json5Parser
                 return null;
             }
 
-            return newToken("numeric", sign * Double.parseDouble(buffer));
+            return newToken("numeric", sign * Integer.parseInt(buffer.substring(2), 16));
         }
 
         Token string() throws SyntaxError
@@ -957,6 +957,7 @@ public class Json5Parser
             {
                 buffer += read();
                 lexState = "identifierName";
+                return null;
             }
             throw invalidChar(read());
         }
