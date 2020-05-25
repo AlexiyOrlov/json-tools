@@ -8,12 +8,13 @@ import java.util.regex.Pattern;
 
 /**
  * An adaptation of original parser from <a>https://github.com/json5/json5</a>.
+ * Instances of this class are not reusable - one must create a new one for every input string
  */
 public class Json5Parser
 {
-    public static final String BEFORE_PROPERTY_NAME = "beforePropertyName";
-    public static final String AFTER_PROPERTY_VALUE = "afterPropertyValue";
-    public static final String AFTER_ARRAY_VALUE = "afterArrayValue";
+    static final String BEFORE_PROPERTY_NAME = "beforePropertyName";
+    static final String AFTER_PROPERTY_VALUE = "afterPropertyValue";
+    static final String AFTER_ARRAY_VALUE = "afterArrayValue";
     String source;
     String parseState;
 
@@ -77,6 +78,13 @@ public class Json5Parser
         System.out.println("JSON5: " + formatChar(c) + " in strings is not valid ECMAScript; consider escaping");
     }
 
+    /**
+     * Parses a JSON5 string
+     *
+     * @param text Json string
+     * @return a {@link List} if input is an array, or {@link Map} if input is an object
+     * @throws SyntaxError if the next character is invalid
+     */
     public Object parse(String text) throws SyntaxError
     {
         source = text;
@@ -254,7 +262,7 @@ public class Json5Parser
     }
 
     /**
-     * Adds element to the stack
+     * Adds an element to the stack
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     void push()
@@ -385,7 +393,6 @@ public class Json5Parser
             read();
         }
     }
-
 
     /**
      * Used only in messages
