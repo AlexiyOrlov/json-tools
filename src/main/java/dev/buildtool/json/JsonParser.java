@@ -141,6 +141,7 @@ public class JsonParser {
      * Recursively parses an object
      *
      * @param input object as string
+     * @return object as hashmap
      */
     public Map<String, Object> parseObject(String input) {
         Map<String, Object> objectMap = new HashMap<>();

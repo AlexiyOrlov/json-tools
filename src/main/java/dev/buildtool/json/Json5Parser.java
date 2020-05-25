@@ -110,7 +110,6 @@ public class Json5Parser
             e.printStackTrace();
             return null;
         }
-
     }
 
     /**
