@@ -1,0 +1,14 @@
+{
+  "web-app": {
+    "servlet": [
+      {
+        "servlet-name": "cofaxCDS",
+        "servlet-class": "org.cofax.cds.CDSServlet"
+      }
+    ],
+    "taglib": {
+      "taglib-uri": "cofax.tld",
+      "taglib-location": "/WEB-INF/tlds/cofax.tld"
+    }
+  }
+}
