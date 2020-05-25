@@ -13,6 +13,7 @@ public class Json5Parser
 {
     public static final String BEFORE_PROPERTY_NAME = "beforePropertyName";
     public static final String AFTER_PROPERTY_VALUE = "afterPropertyValue";
+    public static final String AFTER_ARRAY_VALUE = "afterArrayValue";
     String source;
     String parseState;
 
@@ -98,13 +99,51 @@ public class Json5Parser
         return root;
     }
 
-    //TODO
-    char escape()
+    //TODO finish and test
+    char escape() throws SyntaxError
     {
         char c = peek();
         switch (c)
         {
+            case 'b':
+                read();
+                return '\b';
+            case 'f':
+                read();
+                return '\f';
+            case 'n':
+                read();
+                return '\n';
+            case 'r':
+                read();
+                return '\r';
 
+            case 't':
+                read();
+                return '\t';
+
+//            case 'v':
+//                read();
+//                return '\v';
+            case '0':
+                read();
+                if (isDigit(String.valueOf(peek())))
+                {
+                    throw invalidChar(read());
+                }
+                return '\0';
+//            case 'x':
+//                read();
+//                return hexEscape();
+//
+//            case 'u':
+//                read();
+//                return unicodeEscape();
+//            case '\n':
+//            case '\u2028':
+//            case '\u2029':
+//                read();
+//                return ''
         }
         return read();
     }
@@ -265,7 +304,7 @@ public class Json5Parser
             Object current = stack.get(stack.size() - 1);
             if (current instanceof List)
             {
-                parseState = "afterArrayValue";
+                parseState = AFTER_ARRAY_VALUE;
             }
             else if (current instanceof Map)
             {
@@ -286,7 +325,7 @@ public class Json5Parser
 
             if (lastInStack instanceof List)
             {
-                parseState = "afterArrayValue";
+                parseState = AFTER_ARRAY_VALUE;
             }
             else if (lastInStack instanceof Map)
             {
@@ -407,7 +446,7 @@ public class Json5Parser
                     return afterPropertyValue();
                 case "afterPropertyName":
                     return afterPropertyName();
-                case "afterArrayValue":
+                case AFTER_ARRAY_VALUE:
                     return afterArrayValue();
                 case "end":
                     return end();
@@ -1045,7 +1084,7 @@ public class Json5Parser
                 case AFTER_PROPERTY_VALUE:
                     afterPropertyValue();
                     break;
-                case "afterArrayValue":
+                case AFTER_ARRAY_VALUE:
                     afterArrayValue();
                     break;
             }
