@@ -121,7 +121,8 @@ public class Json5Parser
      * Parses a JSON5 string
      *
      * @return a {@link List} if input is an array, or {@link Map} if input is an object
-     * @throws SyntaxError if the next character is invalid
+     * @throws SyntaxError           if the next character is invalid
+     * @throws IllegalStateException if called again
      */
     public Object parse() throws SyntaxError
     {
