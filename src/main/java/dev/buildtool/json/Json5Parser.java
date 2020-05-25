@@ -948,19 +948,6 @@ public class Json5Parser
                     doubleQuote = (read() == '"');
                     lexState = "string";
                     return null;
-//                case '[': //TODO switch to array parsing
-//                    if (parseState.equals(BEFORE_PROPERTY_NAME))
-//                    {
-//                        parseState = "beforeArrayValue";
-//                        return null;
-//                    }
-//                case '{':
-//                    if(parseState.equals(BEFORE_PROPERTY_NAME))
-//                    {
-//                        parseState="beforeArrayValue";
-//                        return null;
-//                    }
-
             }
 
             if (isIdStartChar(c))
@@ -994,12 +981,6 @@ public class Json5Parser
                 case ',':
                 case '}':
                     return newToken("punctuator", read());
-//                case ']': //TODO
-//                    read();
-//                    return null;
-//                    lexState="value";
-//                    return null;
-//                    return newToken("value",read());
             }
 
             throw invalidChar(read());
@@ -1022,15 +1003,6 @@ public class Json5Parser
                 case ',':
                 case ']':
                     return newToken("punctuator", read());
-//                case '}': //TODO
-//                    read();
-//                    return newToken("value",read());
-//                    return newToken("punctuator",read());
-//                    if (parseState.equals("afterArrayValue"))
-//                    {
-//                        parseState = AFTER_PROPERTY_VALUE;
-//                        return null;
-//                    }
             }
 
             throw invalidChar(read());

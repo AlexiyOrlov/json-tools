@@ -24,10 +24,10 @@ public class Json5ParserTest
         String object5 = JsonParser.readJson("src/test/object5.json5", true);
         ArrayList<Object> results = new ArrayList<>();
 //        results.add(new Json5Parser().parse(bigObject));
-        results.add(new Json5Parser().parse(object5));
-//        results.add(new Json5Parser().parse(array));
+//        results.add(new Json5Parser().parse(object5));
+        results.add(new Json5Parser().parse(array));
 //        results.add(new Json5Parser().parse(arrayWithObject));
-//        results.add(new Json5Parser().parse(object));
+        results.add(new Json5Parser().parse(object));
 //        results.add(new Json5Parser().parse(objectWithArray));
         System.out.println("Results: ");
         results.forEach(result -> {
