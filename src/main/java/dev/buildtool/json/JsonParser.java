@@ -262,7 +262,7 @@ public class JsonParser {
 
     /**
      * @param file       file path
-     * @param withBreaks copy line breaks
+     * @param withBreaks whether to include line breaks
      * @return Json as string
      */
     public static String readJson(String file, boolean withBreaks)

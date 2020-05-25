@@ -1211,7 +1211,7 @@ public class Json5Parser
         }
     }
 
-    class SyntaxError extends Exception
+    public class SyntaxError extends Exception
     {
         int lineNumber, columnNumber;
 
