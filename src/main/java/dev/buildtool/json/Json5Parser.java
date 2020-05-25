@@ -198,7 +198,7 @@ public class Json5Parser
     }
 
     /**
-     * Adds element to the stak
+     * Adds element to the stack
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     void push()
@@ -279,16 +279,19 @@ public class Json5Parser
      */
     void pop()
     {
-
-        Object currentInStack = stack.remove(stack.size() - 1);
-
-        if (currentInStack instanceof List)
+        stack.remove(stack.size() - 1);
+        if (stack.size() > 0)
         {
-            parseState = "afterArrayValue";
-        }
-        else if (currentInStack instanceof Map)
-        {
-            parseState = AFTER_PROPERTY_VALUE;
+            Object lastInStack = stack.get(stack.size() - 1);
+
+            if (lastInStack instanceof List)
+            {
+                parseState = "afterArrayValue";
+            }
+            else if (lastInStack instanceof Map)
+            {
+                parseState = AFTER_PROPERTY_VALUE;
+            }
         }
     }
 
@@ -981,6 +984,7 @@ public class Json5Parser
                 case ',':
                 case '}':
                     return newToken("punctuator", read());
+
             }
 
             throw invalidChar(read());
