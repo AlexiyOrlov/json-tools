@@ -1,7 +1,10 @@
 package dev.buildtool.json;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,13 +90,21 @@ public class Json5Parser
      */
     public static String readJson(String file, boolean withBreaks)
     {
+        return readJson(Paths.get(file), withBreaks);
+    }
+
+    /**
+     * @param withBreaks whether to include line breaks
+     * @return Json as string
+     */
+    public static String readJson(Path path, boolean withBreaks)
+    {
         try
         {
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            BufferedReader reader = Files.newBufferedReader(path);
             String string;
             StringBuilder builder = new StringBuilder();
-            while ((string = bufferedReader.readLine()) != null)
+            while ((string = reader.readLine()) != null)
             {
                 builder.append(string);
                 if (withBreaks)
@@ -101,11 +112,10 @@ public class Json5Parser
                     builder.append('\n');
                 }
             }
-            fileReader.close();
-            bufferedReader.close();
+            reader.close();
             return builder.toString();
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             e.printStackTrace();
             return null;
