@@ -94,6 +94,7 @@ public class Json5Parser
     }
 
     /**
+     * @param path       Json file
      * @param withBreaks whether to include line breaks
      * @return Json as string
      */
