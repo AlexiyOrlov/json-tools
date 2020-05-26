@@ -1,4 +1,3 @@
-module dev.buildtool {
+module dev.buildtool.json {
     exports dev.buildtool.json;
-//    requires org.graalvm.js;
 }

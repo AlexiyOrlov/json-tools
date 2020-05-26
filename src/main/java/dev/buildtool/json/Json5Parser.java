@@ -112,6 +112,9 @@ public class Json5Parser
         }
     }
 
+    /**
+     * @param source Json string
+     */
     public Json5Parser(String source)
     {
         this.source = source;
