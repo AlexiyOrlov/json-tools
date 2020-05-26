@@ -55,21 +55,6 @@ public class Json5Parser
         return spaceSeparator.matcher(s).matches();
     }
 
-    static boolean isIdStartChar(char c)
-    {
-        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == '$' || c == '_') || idStart.matcher(String.valueOf(c)).matches();
-    }
-
-    static boolean isIdContinueChar(char c)
-    {
-        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || (c == '$') || (c == '_') || (c == '\u200C') || (c == '\u200D') || idContinue.matcher(String.valueOf(c)).matches();
-    }
-
-    static boolean isDigit(String s)
-    {
-        return s.matches("[0-9]");
-    }
-
     static boolean isHexDigit(String s)
     {
         return s.matches("[0-9A-Fa-f]");
@@ -187,8 +172,7 @@ public class Json5Parser
 //                return '\v';
             case '0':
                 read();
-                if (isDigit(String.valueOf(peek())))
-                {
+                if (Functions.isDigit(String.valueOf(peek()))) {
                     throw invalidChar(read());
                 }
                 return '\0';
@@ -716,8 +700,7 @@ public class Json5Parser
                 case '_':
                     break;
                 default:
-                    if (!isIdStartChar(u))
-                    {
+                    if (!Functions.isIdStartChar(u)) {
                         throw invalidIdentifier();
                     }
                     break;
@@ -744,8 +727,7 @@ public class Json5Parser
                     lexState = "identifierNameEscape";
             }
 
-            if (Json5Parser.isIdContinueChar(c))
-            {
+            if (Functions.isIdContinueChar(c)) {
                 buffer += read();
                 return null;
             }
@@ -771,8 +753,7 @@ public class Json5Parser
                 case '\u200D':
                     break;
                 default:
-                    if (!Json5Parser.isIdContinueChar(u))
-                    {
+                    if (!Functions.isIdContinueChar(u)) {
                         throw invalidIdentifier();
                     }
                     break;
@@ -862,8 +843,7 @@ public class Json5Parser
                     return null;
             }
 
-            if (isDigit(String.valueOf(c)))
-            {
+            if (Functions.isDigit(String.valueOf(c))) {
                 buffer += read();
                 return null;
             }
@@ -873,8 +853,7 @@ public class Json5Parser
 
         Token decimalPointLeading() throws SyntaxError
         {
-            if (isDigit(String.valueOf(c)))
-            {
+            if (Functions.isDigit(String.valueOf(c))) {
                 buffer += read();
                 lexState = "decimalFraction";
                 return null;
@@ -894,8 +873,7 @@ public class Json5Parser
                     return null;
             }
 
-            if (isDigit(String.valueOf(c)))
-            {
+            if (Functions.isDigit(String.valueOf(c))) {
                 buffer += read();
                 lexState = "decimalFraction";
                 return null;
@@ -915,8 +893,7 @@ public class Json5Parser
                     return null;
             }
 
-            if (isDigit(String.valueOf(c)))
-            {
+            if (Functions.isDigit(String.valueOf(c))) {
                 buffer += read();
                 return null;
             }
@@ -935,8 +912,7 @@ public class Json5Parser
                     return null;
             }
 
-            if (isDigit(String.valueOf(c)))
-            {
+            if (Functions.isDigit(String.valueOf(c))) {
                 buffer += read();
                 lexState = "decimalExponentInteger";
                 return null;
@@ -947,8 +923,7 @@ public class Json5Parser
 
         Token decimalExponentSign() throws SyntaxError
         {
-            if (isDigit(String.valueOf(c)))
-            {
+            if (Functions.isDigit(String.valueOf(c))) {
                 buffer += read();
                 lexState = "decimalExponentInteger";
                 return null;
@@ -959,8 +934,7 @@ public class Json5Parser
 
         Token decimalExponentInteger()
         {
-            if (isDigit(String.valueOf(c)))
-            {
+            if (Functions.isDigit(String.valueOf(c))) {
                 buffer += read();
                 return null;
             }
@@ -1068,8 +1042,7 @@ public class Json5Parser
                     return null;
             }
 
-            if (isIdStartChar(c))
-            {
+            if (Functions.isIdStartChar(c)) {
                 buffer += read();
                 lexState = "identifierName";
                 return null;

@@ -8,11 +8,7 @@ function stringify (value, replacer, space) {
     let gap = ''
     let quote
 
-    if (
-        replacer != null &&
-        typeof replacer === 'object' &&
-        !Array.isArray(replacer)
-    ) {
+    if (replacer != null && typeof replacer === 'object' && !Array.isArray(replacer)) {
         space = replacer.space
         quote = replacer.quote
         replacer = replacer.replacer
