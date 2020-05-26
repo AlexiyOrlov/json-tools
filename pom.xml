@@ -9,6 +9,7 @@
     <version>0.1.0</version>
     <name>JSON tools</name>
     <description>A library for parsing JSON5 data</description>
+    <url>https://github.com/AlexiyOrlov/json-tools</url>
     <licenses>
         <license>
             <name>Apache 2.0</name>
