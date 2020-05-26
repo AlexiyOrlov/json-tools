@@ -6,7 +6,7 @@
 
     <groupId>dev.buildtool</groupId>
     <artifactId>json-tools</artifactId>
-    <version>0.0.1</version>
+    <version>0.1.0</version>
     <name>JSON tools</name>
     <description>A library for parsing JSON5 data</description>
     <licenses>
