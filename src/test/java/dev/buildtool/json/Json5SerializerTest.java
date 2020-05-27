@@ -37,8 +37,9 @@ public class Json5SerializerTest {
         String resultt = new Json5Serializer(linkedHashMap, 3).serialize();
         System.out.println(resultt);
 
-        Object array = new Json5Parser(Json5Parser.readJson(Paths.get("src", "test", "array0.json"), true)).parse();
+        Object array = new Json5Parser(Json5Parser.readJson(Paths.get("src", "test", "array5.json5"), true)).parse();
         String serialized = new Json5Serializer(array).serialize();
         System.out.println(serialized);
+        new Json5Parser(serialized).parse();
     }
 }

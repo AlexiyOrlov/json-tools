@@ -29,8 +29,8 @@ public class Json5Serializer {
     static Map<Character, String> replacements = new HashMap<>();
 
     static {
-        replacements.put('\'', "\\");
-        replacements.put('"', "\"");
+        replacements.put('\'', "\\'");
+        replacements.put('"', "\\\\\"");
         replacements.put('\\', "\\\\");
         replacements.put('\b', "\\b");
         replacements.put('\f', "\\f");
