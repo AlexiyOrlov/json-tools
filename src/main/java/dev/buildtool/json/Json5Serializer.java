@@ -7,6 +7,17 @@ public class Json5Serializer {
     String indent = "";
     List<String> propertyList;
     String gap = "";
+    Object value;
+
+    public Json5Serializer(Object value) {
+        this.value = value;
+    }
+
+    public String serialize() {
+        HashMap<String, Object> hashMap = new HashMap<>(1, 1);
+        hashMap.put("", value);
+        return serializeProperty("", hashMap);
+    }
 
     static Map<Character, String> replacements = new HashMap<>();
 
@@ -25,8 +36,15 @@ public class Json5Serializer {
         replacements.put('\u2029', "\\20298");
     }
 
-    String serializeProperty(String key, Map<String, Object> holder) {
-        Object value = holder.get(key);
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    String serializeProperty(String key, Object holder) {
+        Object value = null;
+        if (holder instanceof List) {
+            value = ((List) holder).get(Integer.parseInt(key));
+        } else if (holder instanceof Map) {
+            value = ((Map) holder).get(key);
+        }
 
         if (value == null)
             return "null";
@@ -42,7 +60,7 @@ public class Json5Serializer {
             return String.valueOf(value);
         }
         if (value instanceof List) {
-
+            return serializeArray((List<Object>) value);
         }
 
         if (value instanceof Map) {
@@ -171,7 +189,8 @@ public class Json5Serializer {
         ArrayList<String> partial = new ArrayList<>();
         for (int i = 0; i < value.size(); i++) {
             //TODO
-//            final String propertyString=serializeProperty(String.valueOf(i),value);
+            final String propertyString = serializeProperty(String.valueOf(i), value);
+            partial.add(propertyString == null ? "null" : propertyString);
         }
 
         String final_;
