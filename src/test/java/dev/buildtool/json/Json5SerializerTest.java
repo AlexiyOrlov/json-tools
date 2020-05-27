@@ -2,6 +2,7 @@ package dev.buildtool.json;
 
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 public class Json5SerializerTest {
 
     @Test
-    public void testSerialize() {
+    public void testSerialize() throws Json5Parser.SyntaxError {
         ArrayList<Object> arrayList = new ArrayList<>();
         arrayList.add("string");
         arrayList.add(55);
@@ -35,5 +36,9 @@ public class Json5SerializerTest {
         linkedHashMap.put("uni", "\u0dca");
         String resultt = new Json5Serializer(linkedHashMap, 3).serialize();
         System.out.println(resultt);
+
+        Object array = new Json5Parser(Json5Parser.readJson(Paths.get("src", "test", "array0.json"), true)).parse();
+        String serialized = new Json5Serializer(array).serialize();
+        System.out.println(serialized);
     }
 }
