@@ -11,7 +11,7 @@ public class Json5Serializer {
 
     public Json5Serializer(Object value) {
         this.value = value;
-        gap = "    ";
+        gap = "  ";
     }
 
     public Json5Serializer(Object value, int space) {
