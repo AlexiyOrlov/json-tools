@@ -2,24 +2,49 @@ package dev.buildtool.json;
 
 import java.util.*;
 
+/**
+ * Serializes a Map or a List into a Json5 string. Translated from the original
+ * JavaScript function
+ */
 public class Json5Serializer {
     ArrayList<Object> stack = new ArrayList<>();
     String indent = "";
     List<String> propertyList;
+    /**
+     * Line indentation
+     */
     String gap = "";
     Object value;
 
+    /**
+     * Initializes a serializer with an indent length of 3
+     *
+     * @param value a List or a Map
+     */
     public Json5Serializer(Object value) {
-        this.value = value;
-        gap = "  ";
+        this(value, 3);
     }
 
+    /**
+     * Initializes a serializer with a given indent length for resulting string
+     *
+     * @param value a List or a Map
+     * @param space length of indentation
+     * @throws IllegalArgumentException if the value is not a List or a Map
+     */
     public Json5Serializer(Object value, int space) {
+        if (!(value instanceof List) && !(value instanceof Map))
+            throw new IllegalArgumentException(value.getClass() + " is not supported");
         double d = Math.min(10, Math.floor(space));
         gap = "          ".substring(0, (int) d);
         this.value = value;
     }
 
+    /**
+     * Serializes the object
+     *
+     * @return a Json5 representation of the object
+     */
     public String serialize() {
         HashMap<String, Object> hashMap = new HashMap<>(1, 1);
         hashMap.put("", value);
