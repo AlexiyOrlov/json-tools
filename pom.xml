@@ -6,9 +6,9 @@
 
     <groupId>dev.buildtool</groupId>
     <artifactId>json-tools</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <name>JSON tools</name>
-    <description>A library for parsing JSON5 data</description>
+    <description>A library for working with JSON5 data</description>
     <url>https://github.com/AlexiyOrlov/json-tools</url>
     <licenses>
         <license>
@@ -25,8 +25,6 @@
     </developers>
     <scm>
         <connection>scm:git:git://github.com/AlexiyOrlov/json-tools.git</connection>
-        <!--        not sure if this one is correct -->
-        <!--        <developerConnection>scm:git:ssh://github.com:AlexiyOrlov/json-tools.git</developerConnection>-->
         <url>https://github.com/AlexiyOrlov/json-tools</url>
     </scm>
     <properties>
@@ -39,12 +37,6 @@
             <version>5.7.0-M1</version>
             <scope>test</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.graalvm.js</groupId>-->
-        <!--            <artifactId>js</artifactId>-->
-        <!--            <version>20.1.0</version>-->
-        <!--        </dependency>-->
-
     </dependencies>
     <distributionManagement>
         <snapshotRepository>
