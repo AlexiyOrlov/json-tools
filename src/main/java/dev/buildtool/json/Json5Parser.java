@@ -117,13 +117,11 @@ public class Json5Parser
      * Parses a JSON5 string
      *
      * @return a {@link List} if input is an array, or {@link Map} if input is an object
-     * @throws SyntaxError           if the next character is invalid
+     * @throws Json5SyntaxError      if the next character is invalid
      * @throws IllegalStateException if called again
      */
-    public Object parse() throws SyntaxError
-    {
-        if (root != null)
-        {
+    public Object parse() throws Json5SyntaxError {
+        if (root != null) {
             throw new IllegalStateException("This parser instance already finished parsing");
         }
         parseState = "start";
@@ -145,11 +143,9 @@ public class Json5Parser
     }
 
     //TODO finish and test
-    char escape() throws SyntaxError
-    {
+    char escape() throws Json5SyntaxError {
         char c = peek();
-        switch (c)
-        {
+        switch (c) {
             case 'b':
                 read();
                 return '\b';
@@ -209,12 +205,10 @@ public class Json5Parser
         return read();
     }
 
-    char hexEscape() throws SyntaxError
-    {
+    char hexEscape() throws Json5SyntaxError {
         StringBuilder stringBuilder = new StringBuilder();
         char c = peek();
-        if (!isHexDigit(String.valueOf(c)))
-        {
+        if (!isHexDigit(String.valueOf(c))) {
             throw invalidChar(read());
         }
 
@@ -232,15 +226,12 @@ public class Json5Parser
         return (char) Integer.parseInt(stringBuilder.toString(), 16);
     }
 
-    char unicodeEscape() throws SyntaxError
-    {
+    char unicodeEscape() throws Json5SyntaxError {
         StringBuilder buffer = new StringBuilder();
         int count = 4;
-        while (count-- > 0)
-        {
+        while (count-- > 0) {
             char c = peek();
-            if (!isHexDigit(String.valueOf(c)))
-            {
+            if (!isHexDigit(String.valueOf(c))) {
                 throw invalidChar(read());
             }
             buffer.append(read());
@@ -249,14 +240,12 @@ public class Json5Parser
         return (char) Integer.parseInt(buffer.toString(), 16);
     }
 
-    Token lex() throws SyntaxError
-    {
+    Token lex() throws Json5SyntaxError {
         lexState = "default";
         buffer = "";
         doubleQuote = false;
         sign = 1;
-        while (pos < source.length())
-        {
+        while (pos < source.length()) {
 
             c = peek();
             Token token = lexStates.match(lexState);
@@ -395,20 +384,17 @@ public class Json5Parser
         }
     }
 
-    SyntaxError invalidChar(char c)
-    {
-        return new SyntaxError("JSON5 - invalid character " + formatChar(c) + " at " + line + ":" + column + "; parser state = " + parseState + ", lexer state = " + lexState);
+    Json5SyntaxError invalidChar(char c) {
+        return new Json5SyntaxError(this, "Invalid character " + formatChar(c) + " at " + line + ":" + column + "; parser state = " + parseState + ", lexer state = " + lexState);
     }
 
-    SyntaxError invalidEOF()
-    {
-        return new SyntaxError("JSON5 - invalid end of input at " + line + ":" + column);
+    Json5SyntaxError invalidEOF() {
+        return new Json5SyntaxError(this, "Invalid end of input at " + line + ":" + column);
     }
 
-    SyntaxError invalidIdentifier()
-    {
+    Json5SyntaxError invalidIdentifier() {
         column -= 5;
-        return new SyntaxError("JSON5 - invalid identifier character at " + line + ":" + column);
+        return new Json5SyntaxError(this, "Invalid identifier character at " + line + ":" + column);
     }
 
     Token newToken(String type, Object value)
@@ -416,14 +402,11 @@ public class Json5Parser
         return new Token(type, value);
     }
 
-    void literal(String s) throws SyntaxError
-    {
-        for (int i = 0; i < s.length(); i++)
-        {
+    void literal(String s) throws Json5SyntaxError {
+        for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             char p = peek();
-            if (p != c)
-            {
+            if (p != c) {
                 throw invalidChar(read());
             }
             read();
@@ -450,10 +433,8 @@ public class Json5Parser
 
     class LexStates
     {
-        Token match(String lexState) throws SyntaxError
-        {
-            switch (lexState)
-            {
+        Token match(String lexState) throws Json5SyntaxError {
+            switch (lexState) {
                 case "default":
                     return default_();
                 case "comment":
@@ -517,10 +498,8 @@ public class Json5Parser
             }
         }
 
-        Token default_() throws SyntaxError
-        {
-            switch (c)
-            {
+        Token default_() throws Json5SyntaxError {
+            switch (c) {
                 case '\t':
 //                case '\v':
                 case '\f':
@@ -547,10 +526,8 @@ public class Json5Parser
             return match(parseState);
         }
 
-        Token comment() throws SyntaxError
-        {
-            switch (c)
-            {
+        Token comment() throws Json5SyntaxError {
+            switch (c) {
                 case '*':
                     read();
                     lexState = "multiLineComment";
@@ -614,10 +591,8 @@ public class Json5Parser
             return null;
         }
 
-        Token value() throws SyntaxError
-        {
-            switch (c)
-            {
+        Token value() throws Json5SyntaxError {
+            switch (c) {
 
                 case '{':
                 case '[':
@@ -684,18 +659,15 @@ public class Json5Parser
             return null;
         }
 
-        Token identifierNameStartEscape() throws SyntaxError
-        {
-            if (c != 'u')
-            {
+        Token identifierNameStartEscape() throws Json5SyntaxError {
+            if (c != 'u') {
                 throw invalidChar(read());
             }
 
             read();
             final char u = unicodeEscape();
 
-            switch (u)
-            {
+            switch (u) {
                 case '$':
                 case '_':
                     break;
@@ -735,17 +707,14 @@ public class Json5Parser
             return newToken("identifier", buffer);
         }
 
-        Token identifierNameEscape() throws SyntaxError
-        {
-            if (c != 'u')
-            {
+        Token identifierNameEscape() throws Json5SyntaxError {
+            if (c != 'u') {
                 throw invalidChar(read());
             }
 
             read();
             final char u = unicodeEscape();
-            switch (u)
-            {
+            switch (u) {
 
                 case '$':
                 case '_':
@@ -764,10 +733,8 @@ public class Json5Parser
             return null;
         }
 
-        Token sign() throws SyntaxError
-        {
-            switch (c)
-            {
+        Token sign() throws Json5SyntaxError {
+            switch (c) {
                 case '.':
                     buffer = String.valueOf(read());
                     lexState = "decimalPointLeading";
@@ -851,8 +818,7 @@ public class Json5Parser
             return newToken("numeric", sign * Double.parseDouble(buffer));
         }
 
-        Token decimalPointLeading() throws SyntaxError
-        {
+        Token decimalPointLeading() throws Json5SyntaxError {
             if (Functions.isDigit(String.valueOf(c))) {
                 buffer += read();
                 lexState = "decimalFraction";
@@ -901,10 +867,8 @@ public class Json5Parser
             return newToken("numeric", sign * Double.parseDouble(buffer));
         }
 
-        Token decimalExponent() throws SyntaxError
-        {
-            switch (c)
-            {
+        Token decimalExponent() throws Json5SyntaxError {
+            switch (c) {
                 case '+':
                 case '-':
                     buffer += read();
@@ -921,8 +885,7 @@ public class Json5Parser
             throw invalidChar(read());
         }
 
-        Token decimalExponentSign() throws SyntaxError
-        {
+        Token decimalExponentSign() throws Json5SyntaxError {
             if (Functions.isDigit(String.valueOf(c))) {
                 buffer += read();
                 lexState = "decimalExponentInteger";
@@ -942,10 +905,8 @@ public class Json5Parser
             return newToken("numeric", sign * Double.parseDouble(buffer));
         }
 
-        Token hexadecimal() throws SyntaxError
-        {
-            if (isHexDigit(String.valueOf(c)))
-            {
+        Token hexadecimal() throws Json5SyntaxError {
+            if (isHexDigit(String.valueOf(c))) {
                 buffer += read();
                 lexState = "hexadecimalInteger";
                 return null;
@@ -965,18 +926,15 @@ public class Json5Parser
             return newToken("numeric", sign * Integer.parseInt(buffer.substring(2), 16));
         }
 
-        Token string() throws SyntaxError
-        {
-            switch (c)
-            {
+        Token string() throws Json5SyntaxError {
+            switch (c) {
                 case '\\':
                     read();
                     buffer += escape();
                     return null;
 
                 case '"':
-                    if (doubleQuote)
-                    {
+                    if (doubleQuote) {
                         read();
                         return newToken("string", buffer);
                     }
@@ -1019,10 +977,8 @@ public class Json5Parser
             return null;
         }
 
-        Token beforePropertyName() throws SyntaxError
-        {
-            switch (c)
-            {
+        Token beforePropertyName() throws Json5SyntaxError {
+            switch (c) {
                 case '$':
                 case '_':
                     buffer = String.valueOf(read());
@@ -1050,10 +1006,8 @@ public class Json5Parser
             throw invalidChar(read());
         }
 
-        Token afterPropertyName() throws SyntaxError
-        {
-            if (c == ':')
-            {
+        Token afterPropertyName() throws Json5SyntaxError {
+            if (c == ':') {
                 return newToken("punctuator", read());
             }
 
@@ -1066,10 +1020,8 @@ public class Json5Parser
             return null;
         }
 
-        Token afterPropertyValue() throws SyntaxError
-        {
-            switch (c)
-            {
+        Token afterPropertyValue() throws Json5SyntaxError {
+            switch (c) {
                 case ',':
                 case '}':
                     return newToken("punctuator", read());
@@ -1089,10 +1041,8 @@ public class Json5Parser
             return null;
         }
 
-        Token afterArrayValue() throws SyntaxError
-        {
-            switch (c)
-            {
+        Token afterArrayValue() throws Json5SyntaxError {
+            switch (c) {
                 case ',':
                 case ']':
                     return newToken("punctuator", read());
@@ -1101,8 +1051,7 @@ public class Json5Parser
             throw invalidChar(read());
         }
 
-        Token end() throws SyntaxError
-        {
+        Token end() throws Json5SyntaxError {
             throw invalidChar(read());
         }
     }
@@ -1111,10 +1060,8 @@ public class Json5Parser
     class ParseStates
     {
 
-        void matchState(String parseState) throws SyntaxError
-        {
-            switch (parseState)
-            {
+        void matchState(String parseState) throws Json5SyntaxError {
+            switch (parseState) {
                 case "start":
                     start();
                     break;
@@ -1139,19 +1086,15 @@ public class Json5Parser
             }
         }
 
-        void start() throws SyntaxError
-        {
-            if (token.type.equals("eof"))
-            {
+        void start() throws Json5SyntaxError {
+            if (token.type.equals("eof")) {
                 throw invalidEOF();
             }
             push();
         }
 
-        void beforePropertyName() throws SyntaxError
-        {
-            switch (token.type)
-            {
+        void beforePropertyName() throws Json5SyntaxError {
+            switch (token.type) {
                 case "identifier":
                 case "string":
                     key = String.valueOf(token.value);
@@ -1165,51 +1108,40 @@ public class Json5Parser
             }
         }
 
-        void afterPropertyName() throws SyntaxError
-        {
-            if (token.type.equals("eof"))
-            {
+        void afterPropertyName() throws Json5SyntaxError {
+            if (token.type.equals("eof")) {
                 throw invalidEOF();
             }
             parseState = "beforePropertyValue";
         }
 
-        void beforePropertyValue() throws SyntaxError
-        {
-            if (token.type.equals("eof"))
-            {
+        void beforePropertyValue() throws Json5SyntaxError {
+            if (token.type.equals("eof")) {
                 throw invalidEOF();
             }
 
             push();
         }
 
-        void beforeArrayValue() throws SyntaxError
-        {
-            if (token.type.equals("eof"))
-            {
+        void beforeArrayValue() throws Json5SyntaxError {
+            if (token.type.equals("eof")) {
                 throw invalidEOF();
             }
 
-            if (token.type.equals("punctuator") && token.value.equals("]"))
-            {
+            if (token.type.equals("punctuator") && token.value.equals("]")) {
                 pop();
-            }
-            else
+            } else
             {
                 push();
             }
         }
 
-        void afterPropertyValue() throws SyntaxError
-        {
-            if (token.type.equals("eof"))
-            {
+        void afterPropertyValue() throws Json5SyntaxError {
+            if (token.type.equals("eof")) {
                 throw invalidEOF();
             }
 
-            switch (String.valueOf(token.value))
-            {
+            switch (String.valueOf(token.value)) {
                 case ",":
                     parseState = BEFORE_PROPERTY_NAME;
                     return;
@@ -1218,33 +1150,18 @@ public class Json5Parser
             }
         }
 
-        void afterArrayValue() throws SyntaxError
-        {
-            if (token.type.equals("eof"))
-            {
+        void afterArrayValue() throws Json5SyntaxError {
+            if (token.type.equals("eof")) {
                 throw invalidEOF();
             }
 
-            switch (String.valueOf(token.value))
-            {
+            switch (String.valueOf(token.value)) {
                 case ",":
                     parseState = "beforeArrayValue";
                     return;
                 case "]":
                     pop();
             }
-        }
-    }
-
-    public class SyntaxError extends Exception
-    {
-        int lineNumber, columnNumber;
-
-        SyntaxError(String message_)
-        {
-            super(message_);
-            this.lineNumber = line;
-            this.columnNumber = column;
         }
     }
 

@@ -14,8 +14,7 @@ public class Json5ParserTest
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
-    public void testParse() throws Json5Parser.SyntaxError
-    {
+    public void testParse() throws Json5SyntaxError {
         String array = Json5Parser.readJson("src/test/array5.json5", true);
         String object = Json5Parser.readJson("src/test/object.json5", true);
         String arrayWithObject = Json5Parser.readJson("src/test/array0.json", true);

@@ -10,7 +10,7 @@ import java.util.List;
 public class Json5SerializerTest {
 
     @Test
-    public void testSerialize() throws Json5Parser.SyntaxError {
+    public void testSerialize() throws Json5SyntaxError {
         ArrayList<Object> arrayList = new ArrayList<>();
         arrayList.add("string");
         arrayList.add(55);
