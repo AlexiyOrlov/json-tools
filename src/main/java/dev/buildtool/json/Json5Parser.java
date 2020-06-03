@@ -385,16 +385,16 @@ public class Json5Parser
     }
 
     Json5SyntaxError invalidChar(char c) {
-        return new Json5SyntaxError(this, "Invalid character " + formatChar(c) + " at " + line + ":" + column + "; parser state = " + parseState + ", lexer state = " + lexState);
+        return new Json5SyntaxError("Invalid character " + formatChar(c) + " at " + line + ":" + column + "; parser state = " + parseState + ", lexer state = " + lexState);
     }
 
     Json5SyntaxError invalidEOF() {
-        return new Json5SyntaxError(this, "Invalid end of input at " + line + ":" + column);
+        return new Json5SyntaxError("Invalid end of input at " + line + ":" + column);
     }
 
     Json5SyntaxError invalidIdentifier() {
         column -= 5;
-        return new Json5SyntaxError(this, "Invalid identifier character at " + line + ":" + column);
+        return new Json5SyntaxError("Invalid identifier character at " + line + ":" + column);
     }
 
     Token newToken(String type, Object value)
