@@ -203,6 +203,9 @@ public class Json5Serializer {
         if (!Functions.isIdContinueChar(firstChar))
             return quoteString(key);
 
+        if (key.contains("+"))
+            return quoteString(key);
+
         return key;
     }
 
