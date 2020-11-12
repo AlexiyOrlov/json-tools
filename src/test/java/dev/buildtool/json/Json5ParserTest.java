@@ -38,16 +38,19 @@ public class Json5ParserTest
         results.add(parser.parse());
         System.out.println("Results: ");
         results.forEach(result -> {
-            if (result instanceof List)
-            {
+            if (result instanceof List) {
                 ((List) result).forEach(System.out::println);
-            }
-            else if (result instanceof Map)
-            {
+            } else if (result instanceof Map) {
                 ((Map) result).forEach((o, o2) -> System.out.println(o + " : " + o2));
             }
             System.out.println(".............");
         });
+    }
 
+    @Test
+    public void testParse2() throws Json5SyntaxError {
+        String listMap = Json5Parser.readJson("src/test/fail.json5", true);
+        Object o = new Json5Parser(listMap).parse();
+        System.out.println(o);
     }
 }
