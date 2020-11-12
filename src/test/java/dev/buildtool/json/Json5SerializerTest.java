@@ -49,7 +49,7 @@ public class Json5SerializerTest {
 
     @Test
     public void testWrite() throws IOException {
-        String json = "{one:1,two:2,'three+four':7}";
+        String json = "{one:1,\ntwo:2,\n'three+four':7}";
         Path path = Json5Serializer.writeJson(json, "testWrite.json5");
         Files.delete(path);
     }
