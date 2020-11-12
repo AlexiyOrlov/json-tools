@@ -34,6 +34,7 @@ public class Json5SerializerTest {
         linkedHashMap.put("four", 333);
         linkedHashMap.put("five", 11.44);
         linkedHashMap.put("uni", "\u0dca");
+        linkedHashMap.put("four+five", 9);
         String resultt = new Json5Serializer(linkedHashMap, 3).serialize();
         System.out.println(resultt);
 

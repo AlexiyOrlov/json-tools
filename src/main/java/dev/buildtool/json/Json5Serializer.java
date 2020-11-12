@@ -155,10 +155,7 @@ public class Json5Serializer {
         String stepback = indent;
         indent = indent + gap;
         List<String> keys;
-        if (propertyList != null)
-            keys = propertyList;
-        else
-            keys = new ArrayList<>(value.keySet());
+        keys = Objects.requireNonNullElseGet(propertyList, () -> new ArrayList<>(value.keySet()));
 
         ArrayList<String> partial = new ArrayList<>();
 
