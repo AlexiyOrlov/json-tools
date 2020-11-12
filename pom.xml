@@ -6,7 +6,7 @@
 
     <groupId>dev.buildtool</groupId>
     <artifactId>json-tools</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
     <name>JSON tools</name>
     <description>A library for working with JSON5 data</description>
     <url>https://github.com/AlexiyOrlov/json-tools</url>
