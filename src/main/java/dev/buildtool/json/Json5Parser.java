@@ -132,14 +132,29 @@ public class Json5Parser
         while (true)
         {
             token = lex();
-            if (token == null)
-            {
+            if (token == null) {
                 break;
             }
             parseStates.matchState(parseState);
         }
 
         return root;
+    }
+
+    /**
+     * Use if you are sure that data is an array
+     */
+    @SuppressWarnings("unchecked")
+    public List<Object> parseAsList() throws Json5SyntaxError {
+        return (List<Object>) parse();
+    }
+
+    /**
+     * Use if you are sure that data is an object
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> parseAsMap() throws Json5SyntaxError {
+        return (Map<String, Object>) parse();
     }
 
     //TODO finish and test
