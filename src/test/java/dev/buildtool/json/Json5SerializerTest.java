@@ -2,6 +2,9 @@ package dev.buildtool.json;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -42,5 +45,12 @@ public class Json5SerializerTest {
         String serialized = new Json5Serializer(array).serialize();
         System.out.println(serialized);
         new Json5Parser(serialized).parse();
+    }
+
+    @Test
+    public void testWrite() throws IOException {
+        String json = "{one:1,two:2,'three+four':7}";
+        Path path = Json5Serializer.writeJson(json, "testWrite.json5");
+        Files.delete(path);
     }
 }
