@@ -194,18 +194,18 @@ public class Json5Parser
             case 'u':
                 read();
                 return unicodeEscape();
-//            case '\n':
-//            case '\u2028':
-//            case '\u2029':
-//                read();
-//                return ''
-//            case '\r':
-//                read();
-//                if (peek() == '\n') {
-//                    read();
-//                }
-//
-//                return '';
+            case '\n':
+            case '\u2028':
+            case '\u2029':
+                read();
+                return Character.MIN_VALUE;
+
+            case '\r':
+                read();
+                if (peek() == '\n') {
+                    read();
+                }
+                return Character.MIN_VALUE;
             case '1':
             case '2':
             case '3':
@@ -261,11 +261,9 @@ public class Json5Parser
         doubleQuote = false;
         sign = 1;
         while (pos < source.length()) {
-
             c = peek();
             Token token = lexStates.match(lexState);
-            if (token != null)
-            {
+            if (token != null) {
                 return token;
             }
         }
@@ -287,17 +285,14 @@ public class Json5Parser
     char read()
     {
         char c = peek();
-        if (c == '\n')
-        {
+        if (c == '\n') {
             line++;
             column = 0;
-        }
-        else
-        {
+        } else if (c != Character.MIN_VALUE) {
             column++;
         }
-
-        pos++;
+        if (c != Character.MIN_VALUE)
+            pos++;
         return c;
     }
 
@@ -531,6 +526,9 @@ public class Json5Parser
                     read();
                     lexState = "comment";
                     return null;
+                case Character.MIN_VALUE:
+                    read();
+                    return newToken("eof", null);
             }
 
             if (isSpaceSeparator(String.valueOf(c)))
@@ -588,8 +586,7 @@ public class Json5Parser
 
         Token singleLineComment()
         {
-            switch (c)
-            {
+            switch (c) {
                 case '\n':
                 case '\r':
                 case '\u2028':
@@ -597,10 +594,9 @@ public class Json5Parser
                     read();
                     lexState = "default";
                     return null;
-                //TODO
-//                default:
-//                    read();
-//                    return newToken("eof",null);
+                case Character.MIN_VALUE:
+                    read();
+                    return newToken("eof", null);
             }
             read();
             return null;
@@ -671,7 +667,7 @@ public class Json5Parser
                     lexState = "string";
                     return null;
             }
-            return null;
+            throw invalidChar(read());
         }
 
         Token identifierNameStartEscape() throws Json5SyntaxError {
@@ -1145,10 +1141,11 @@ public class Json5Parser
 
             if (token.type.equals("punctuator") && token.value.equals("]")) {
                 pop();
-            } else
-            {
-                push();
+                return;
             }
+
+            push();
+
         }
 
         void afterPropertyValue() throws Json5SyntaxError {
