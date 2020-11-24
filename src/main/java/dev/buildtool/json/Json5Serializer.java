@@ -55,7 +55,7 @@ public class Json5Serializer {
 
     static {
         replacements.put('\'', "\\'");
-        replacements.put('"', "\\\"");
+        replacements.put('"', "\\\\\"");
         replacements.put('\\', "\\\\");
         replacements.put('\b', "\\b");
         replacements.put('\f', "\\f");
