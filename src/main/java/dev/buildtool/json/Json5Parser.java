@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * A parser translated from the original Javascript parser.
+ * A parser adapted from the original Javascript parser.
  */
 public class Json5Parser {
     public static final String SINGLE_LINE_COMMENT = "singleLineComment";
@@ -89,6 +89,8 @@ public class Json5Parser {
      * @throws SyntaxError on invalid content
      */
     public Object parse() throws SyntaxError {
+        if (root != null)
+            throw new IllegalStateException("Can't reuse parser instance");
         parseState = START;
         stack = new ArrayList<>();
         pos = 0;
