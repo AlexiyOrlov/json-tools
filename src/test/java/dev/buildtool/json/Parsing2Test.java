@@ -12,5 +12,9 @@ public class Parsing2Test {
         System.out.println(o);
         System.out.println(new Json5Parser(Functions.readJson(Paths.get("src", "test", "example.json5"))).parse());
 
+        String json5Data = Functions.readJson(Paths.get("path", "to", "file"));
+        Json5Parser json5Parser = new Json5Parser(json5Data);
+        Object result = json5Parser.parse();
+
     }
 }

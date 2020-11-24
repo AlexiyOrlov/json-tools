@@ -1,6 +1,6 @@
 # JSON tools
 
-A library for working with JSON5 data. Currently includes a parser,
+A small library for working with JSON5 data. Currently includes a parser,
 which converts the data to a List or a Map, and a serializer, which converts a Map or a List to JSON5 data. 
 The parser and serializer have been translated from the original JavaScript functions.
 
