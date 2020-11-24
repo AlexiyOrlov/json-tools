@@ -13,7 +13,7 @@ import java.util.List;
 public class Json5SerializerTest {
 
     @Test
-    public void testSerialize() throws Json5SyntaxError {
+    public void testSerialize() throws Json5SyntaxError, SyntaxError {
         ArrayList<Object> arrayList = new ArrayList<>();
         arrayList.add("string");
         arrayList.add(55);
@@ -41,10 +41,10 @@ public class Json5SerializerTest {
         String resultt = new Json5Serializer(linkedHashMap, 3).serialize();
         System.out.println(resultt);
 
-        Object array = new Json5ParserBugged(Functions.readJson(Paths.get("src", "test", "array5.json5"))).parse();
+        Object array = new Json5Parser(Functions.readJson(Paths.get("src", "test", "array5.json5"))).parse();
         String serialized = new Json5Serializer(array).serialize();
         System.out.println(serialized);
-        new Json5ParserBugged(serialized).parse();
+        new Json5Parser(serialized).parse();
     }
 
     @Test
