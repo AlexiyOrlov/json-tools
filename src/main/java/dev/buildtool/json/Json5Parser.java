@@ -1004,9 +1004,4 @@ public class Json5Parser {
     }
 
 
-    static class SyntaxError extends Exception {
-        public SyntaxError(String message) {
-            super(message);
-        }
-    }
 }
