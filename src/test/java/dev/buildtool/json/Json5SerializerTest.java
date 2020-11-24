@@ -41,7 +41,7 @@ public class Json5SerializerTest {
         String resultt = new Json5Serializer(linkedHashMap, 3).serialize();
         System.out.println(resultt);
 
-        Object array = new Json5ParserBugged(Json5ParserBugged.readJson(Paths.get("src", "test", "array5.json5"))).parse();
+        Object array = new Json5ParserBugged(Functions.readJson(Paths.get("src", "test", "array5.json5"))).parse();
         String serialized = new Json5Serializer(array).serialize();
         System.out.println(serialized);
         new Json5ParserBugged(serialized).parse();
@@ -50,7 +50,7 @@ public class Json5SerializerTest {
     @Test
     public void testWrite() throws IOException {
         String json = "{one:1,\ntwo:2,\n'three+four':7}";
-        Path path = Json5Serializer.writeJson(json, "testWrite.json5");
+        Path path = Functions.writeJson(json, "testWrite.json5");
         Files.delete(path);
     }
 }

@@ -1,10 +1,5 @@
 package dev.buildtool.json;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -60,35 +55,6 @@ public class Json5ParserBugged {
 
     static void separatorChar(char c) {
         System.out.println("JSON5: " + formatChar(c) + " in strings is not valid ECMAScript; consider escaping");
-    }
-
-    /**
-     * @param file file path
-     * @return Json as string
-     */
-    public static String readJson(String file) {
-        return readJson(Paths.get(file));
-    }
-
-    /**
-     * @param path Json file
-     * @return Json as string
-     */
-    public static String readJson(Path path) {
-        try {
-            BufferedReader reader = Files.newBufferedReader(path);
-            String string;
-            StringBuilder builder = new StringBuilder();
-            while ((string = reader.readLine()) != null) {
-                builder.append(string);
-                builder.append('\n');
-            }
-            reader.close();
-            return builder.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     /**

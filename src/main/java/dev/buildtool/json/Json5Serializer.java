@@ -1,9 +1,5 @@
 package dev.buildtool.json;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -245,21 +241,4 @@ public class Json5Serializer {
         return final_;
     }
 
-    /**
-     * Writes Json string to a named file
-     *
-     * @return the file
-     */
-    public static Path writeJson(String json, String fileName) {
-        Path path = Paths.get(fileName);
-        if (Files.notExists(path)) {
-            try {
-                Files.write(path, Collections.singleton(json));
-                return path;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
 }
