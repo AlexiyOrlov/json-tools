@@ -7,14 +7,14 @@ import java.util.*;
  * JavaScript function
  */
 public class Json5Serializer {
-    ArrayList<Object> stack = new ArrayList<>();
-    String indent = "";
-    List<String> propertyList;
+    private final ArrayList<Object> stack = new ArrayList<>();
+    private String indent = "";
+    private List<String> propertyList;
     /**
      * Line indentation
      */
-    String gap = "";
-    Object value;
+    private String gap = "";
+    private final Object value;
 
     /**
      * Initializes a serializer with an indent length of 3
@@ -55,14 +55,13 @@ public class Json5Serializer {
 
     static {
         replacements.put('\'', "\\'");
-        replacements.put('"', "\\\\\"");
+        replacements.put('"', "\\\"");
         replacements.put('\\', "\\\\");
         replacements.put('\b', "\\b");
         replacements.put('\f', "\\f");
         replacements.put('\n', "\\n");
         replacements.put('\r', "\\r");
         replacements.put('\t', "\\t");
-//        replacements.put('\v')
         replacements.put('\0', "\\0");
         replacements.put('\u2028', "\\2028");
         replacements.put('\u2029', "\\20298");
