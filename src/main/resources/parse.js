@@ -294,7 +294,7 @@ const lexStates = {
 
         case 'I':
             read()
-            literal('infinity')
+            literal('nfinity')
             return newToken('numeric', Infinity)
 
         case 'N':
