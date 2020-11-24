@@ -103,6 +103,25 @@ public class Json5Parser {
         return root;
     }
 
+    /**
+     * Use this if you are sure that input is an object
+     *
+     * @return
+     * @throws SyntaxError
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> parseAsMap() throws SyntaxError {
+        return (Map<String, Object>) parse();
+    }
+
+    /**
+     * Use this if you are sure that input is an array
+     */
+    @SuppressWarnings("unchecked")
+    public List<Object> parseAsList() throws SyntaxError {
+        return (List<Object>) parse();
+    }
+
     private final LexState lexStates = new LexState();
     private String lexState;
     private String buffer;
