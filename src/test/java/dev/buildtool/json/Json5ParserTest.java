@@ -14,14 +14,14 @@ public class Json5ParserTest
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
-    public void testParse() throws Json5SyntaxError {
-        String array = Json5Parser.readJson("src/test/array5.json5", true);
-        String object = Json5Parser.readJson("src/test/object.json5", true);
-        String arrayWithObject = Json5Parser.readJson("src/test/array0.json", true);
-        String objectWithArray = Json5Parser.readJson("src/test/object0.json", true);
-        String bigObject = Json5Parser.readJson("src/test/big_object.json", true);
-        String object5 = Json5Parser.readJson("src/test/object5.json5", true);
-        String officialExample = Json5Parser.readJson("src/test/example.json5", true);
+    public void testParse() throws Json5SyntaxError, Json5Parser.SyntaxError {
+        String array = Json5ParserBugged.readJson("src/test/array5.json5");
+        String object = Json5ParserBugged.readJson("src/test/object.json5");
+        String arrayWithObject = Json5ParserBugged.readJson("src/test/array0.json");
+        String objectWithArray = Json5ParserBugged.readJson("src/test/object0.json");
+        String bigObject = Json5ParserBugged.readJson("src/test/big_object.json");
+        String object5 = Json5ParserBugged.readJson("src/test/object5.json5");
+        String officialExample = Json5ParserBugged.readJson("src/test/example.json5");
         ArrayList<Object> results = new ArrayList<>();
         results.add(new Json5Parser(bigObject).parse());
         results.add(new Json5Parser(array).parse());
@@ -30,11 +30,11 @@ public class Json5ParserTest
         results.add(new Json5Parser(object5).parse());
         results.add(new Json5Parser(objectWithArray).parse());
         results.add(new Json5Parser(officialExample).parse());
-        results.add(new Json5Parser(Json5Parser.readJson("src/test/array.json", true)).parse());
-        results.add(new Json5Parser(Json5Parser.readJson("src/test/object1.json", true)).parse());
-        results.add(new Json5Parser(Json5Parser.readJson("src/test/object2.json", true)).parse());
-        results.add(new Json5Parser(Json5Parser.readJson("src/test/object5.json5", true)).parse());
-        final Json5Parser parser = new Json5Parser(Json5Parser.readJson("src/test/object3.json", true));
+        results.add(new Json5Parser(Json5ParserBugged.readJson("src/test/array.json")).parse());
+        results.add(new Json5Parser(Json5ParserBugged.readJson("src/test/object1.json")).parse());
+        results.add(new Json5Parser(Json5ParserBugged.readJson("src/test/object2.json")).parse());
+        results.add(new Json5Parser(Json5ParserBugged.readJson("src/test/object5.json5")).parse());
+        final Json5Parser parser = new Json5Parser(Json5ParserBugged.readJson("src/test/object3.json"));
         results.add(parser.parse());
         System.out.println("Results: ");
         results.forEach(result -> {
@@ -45,12 +45,5 @@ public class Json5ParserTest
             }
             System.out.println(".............");
         });
-    }
-
-    @Test
-    public void testParse2() throws Json5SyntaxError {
-        String listMap = Json5Parser.readJson("src/test/fail.json5", true);
-        Object o = new Json5Parser(listMap).parse();
-        System.out.println(o);
     }
 }

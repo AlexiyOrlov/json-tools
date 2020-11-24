@@ -7,7 +7,10 @@ import java.nio.file.Paths;
 public class Parsing2Test {
 
     @Test
-    public void test1() throws Json5Parser2.SyntaxError {
-        new Json5Parser2(Json5Parser.readJson(Paths.get("src", "test", "fail.json5"), true)).parse();
+    public void test1() throws Json5Parser.SyntaxError, Json5SyntaxError {
+        Object o = new Json5Parser(Json5ParserBugged.readJson(Paths.get("src", "test", "fail.json5"))).parse();
+        System.out.println(o);
+        System.out.println(new Json5Parser(Json5ParserBugged.readJson(Paths.get("src", "test", "example.json5"))).parse());
+
     }
 }
