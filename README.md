@@ -6,7 +6,7 @@ The parser and serializer have been adapted from the original JavaScript functio
 
 # Requirements
 
-Java 9 is needed by this project.
+This library requires Java 9+.
 
 # Usage
 
